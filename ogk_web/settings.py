@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
-import dj_database_url
-db_from_env = dj_database_url.config()
+# import dj_database_url
+# db_from_env = dj_database_url.config()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -53,10 +53,10 @@ INSTALLED_APPS = [
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [('127.0.0.1', 8000),],
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis-server-name", 6379)],
         },
     },
 }
@@ -105,7 +105,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'].update(db_from_env)
+# DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
