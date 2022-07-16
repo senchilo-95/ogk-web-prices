@@ -1,6 +1,8 @@
 import dash
-from dash import dcc, html
+import dash_core_components as dcc
+import dash_html_components as html
 import dash_bootstrap_components as dbc
+# from dash import html, dcc
 import plotly.express as px
 from dash.dependencies import Input, Output
 import pandas as pd
@@ -12,7 +14,7 @@ connection=engine.connect()
 
 
 
-app = DjangoDash('SimpleExample',add_bootstrap_links=True)   # replaces dash.Dash
+app = DjangoDash('SimpleExample')   # replaces dash.Dash
 # df_st=df_h.copy()
 dict_dates = {1:'янв',2:'фев',3:'мар',4:'апр',5:'мая',6:'июн',7:'июл',8:'авг',9:'сен',10:'окт',11:'ноя',12:'дек'}
 range_of_dates=pd.date_range(start=df_st.index[0].date(),end=df_st.index[-1].date(),freq='1D')
@@ -42,9 +44,9 @@ slider=dcc.Slider(len(df_st_m)-14, len(df_st_m)-1,1, value=len(df_st_m)-1,
     included=False,
     id='date_slider'
 )
-
-day_prices = dbc.Card([dcc.Graph(id='my-graph1')],style={"width": "100%",'margin':'5px'})
-hour_prices = dbc.Card([dcc.Graph(id='my-graph2'),dbc.CardBody(slider)],style={"width": "100%",'margin':'5px'})
+slider = html.Div([slider], style={'height': '50px'})
+day_prices = dbc.Card([dcc.Graph(id='my-graph1')],style={"width": "98%",'margin':'5px'})
+hour_prices = dbc.Card([dcc.Graph(id='my-graph2'),dbc.CardBody(slider)],style={"width": "98%",'margin':'5px'})
 
 cards = dbc.Col([
         dbc.Row(day_prices),

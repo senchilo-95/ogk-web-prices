@@ -33,10 +33,9 @@ ORDER BY date DESC
 
 dates = pd.read_sql_query(command,connection)
 dates['date']=pd.to_datetime(dates['date'])
-dates=(dates.set_index('date').resample('1D').mean().index.unique())
 
-end_date=dates[-1].date()
-print(end_date)
+end_date=(pd.to_datetime(dates.iloc[0].values[0]).date())
+
 time_hour = datetime.datetime.now().hour
 tommorow = datetime.datetime.today()+datetime.timedelta(days=1)
 day_now=datetime.datetime.today()
@@ -108,7 +107,6 @@ FROM [dash_RSV_prices_rsv_from_ats]
 """)
 
 df = pd.read_sql_query(command,connection)
-
 connection.close()
 df_st=pd.pivot_table(df,index='date',columns='station',values='price')
 df_st.index=pd.to_datetime(df_st.index)

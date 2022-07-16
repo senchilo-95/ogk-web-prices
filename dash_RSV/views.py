@@ -7,5 +7,6 @@ def index(request):
     return render(request,'dash_RSV/index.html', {'prices':prices})
 
 def about(request):
-    return render(request,'dash_RSV/dash_RSV.html')
+    prices = prices_RSV_from_ATS.objects.all()
+    return render(request, 'dash_RSV/index.html', {'prices': prices})
 
