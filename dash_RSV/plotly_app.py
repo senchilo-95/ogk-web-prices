@@ -22,6 +22,7 @@ dates_list = ['{} {}'.format(idx.day,dict_dates[idx.month]) for idx in range_of_
 df_st_m = df_st.resample('1D').mean()
 dropdown = dcc.Dropdown(
     id = 'station-dropdown',
+    searchable=False,
     value='Киришская ГРЭС',
     options=[
 {'label' : 'Все станции', 'value' : df_st.columns},
