@@ -1,1 +1,1 @@
-web: gunicorn ogk_web_dashboard.wsgi --log-file -
+web: gunicorn ogk_web.wsgi --log-file -
