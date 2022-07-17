@@ -46,14 +46,14 @@ slider=dcc.Slider(len(df_st_m)-14, len(df_st_m)-1,1, value=len(df_st_m)-1,
     id='date_slider'
 )
 slider = html.Div([slider], style={'height': '50px'})
-day_prices = dbc.Card([dcc.Graph(id='my-graph1')],style={"width": "98%",'margin':'5px'})
-hour_prices = dbc.Card([dcc.Graph(id='my-graph2'),dbc.CardBody(slider)],style={"width": "98%",'margin':'5px'})
+day_prices = dbc.Card([dcc.Graph(id='my-graph1')],style={'min-width':'600px'})
+hour_prices = dbc.Card([dcc.Graph(id='my-graph2'),dbc.CardBody(slider)],style={'min-width':'600px'})
 
 cards = dbc.Col([
         dbc.Row(day_prices),
         dbc.Row(hour_prices)
                 ])
-app.layout = html.Div([dropdown,cards],style={'background-color': '#D0DBEA'})
+app.layout = html.Div([dropdown,cards],style={'background-color': '#D0DBEA','min-width':'600px'})
 
 # # график для прогноза цен
 @app.callback([Output('my-graph1', 'figure'),Output('my-graph2', 'figure')],
