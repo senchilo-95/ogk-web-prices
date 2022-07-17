@@ -63,7 +63,7 @@ def update_graph(tab,date):
                  df_st[tab].resample('1D').mean(),
                 title="Среднесуточные цены РСВ",
                 labels={
-               "date_new": "Дата. Выберите период.",
+               "date": "Дата. Выберите период.",
                  "value": "Цена РСВ, руб/МВт*ч",
                     'variable':'Станция'
                     },
@@ -82,9 +82,9 @@ def update_graph(tab,date):
     df_st_h = df_st[(df_st.index.year==y)&(df_st.index.month==m)&(df_st.index.day==d)]
     figure_2 = px.line(
                 df_st_h[tab],
-                title="Почасовые цены РСВ",
+                title="Почасовые цены РСВ. {} {}".format(d,dict_dates[m]),
                 labels={
-               "date_new": "Дата",
+               "date": "Час суток",
                  "value": "Цена РСВ, руб/МВт*ч",
                     'variable':'Станция'
                     },template="plotly_white")
