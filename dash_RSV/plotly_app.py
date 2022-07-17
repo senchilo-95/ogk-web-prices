@@ -81,7 +81,7 @@ def update_graph(tab,date):
     figure.update_yaxes(showgrid=True,showline=True, linewidth=0.1, linecolor='black', gridcolor='#DDE6F3')
     ticktext=[datetime.datetime.strptime(str(elem.date()), "%Y-%m-%d").strftime('%d-%b')
             for elem in df_st_m.index]
-    figure.update_xaxes(tickformat='%d-%b-%Y %a')
+    figure.update_xaxes(tickformat='%d-%b')
     figure.update_xaxes(tickvals=df_st_m.index)
     figure.update_xaxes(ticktext=ticktext)
     date_for_slider = df_st_m.index[date]
