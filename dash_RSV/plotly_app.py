@@ -11,6 +11,9 @@ import sqlalchemy as sa
 from .datasets import df_st
 engine = sa.create_engine('sqlite:///db.sqlite3')
 connection=engine.connect()
+import datetime
+import locale
+locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 
 
 
@@ -20,6 +23,7 @@ dict_dates = {1:'янв',2:'фев',3:'мар',4:'апр',5:'мая',6:'июн',
 range_of_dates=pd.date_range(start=df_st.index[0].date(),end=df_st.index[-1].date(),freq='1D')
 dates_list = ['{} {}'.format(idx.day,dict_dates[idx.month]) for idx in range_of_dates]
 df_st_m = df_st.resample('1D').mean()
+
 dropdown = dcc.Dropdown(
     id = 'station-dropdown',
     searchable=False,
@@ -75,6 +79,11 @@ def update_graph(tab,date):
         showgrid=True,showline=True, linewidth=0.1, linecolor='black', gridcolor='#DDE6F3'
         )
     figure.update_yaxes(showgrid=True,showline=True, linewidth=0.1, linecolor='black', gridcolor='#DDE6F3')
+    ticktext=[datetime.datetime.strptime(str(elem.date()), "%Y-%m-%d").strftime('%d-%b')
+            for elem in df_st_m.index]
+    figure.update_xaxes(tickformat='%d-%b-%Y %a')
+    figure.update_xaxes(tickvals=df_st_m.index)
+    figure.update_xaxes(ticktext=ticktext)
     date_for_slider = df_st_m.index[date]
     y=date_for_slider.year
     m=date_for_slider.month
