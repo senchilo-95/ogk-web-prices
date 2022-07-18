@@ -57,6 +57,8 @@ cards = dbc.Col([
         dbc.Row(day_prices),
         dbc.Row(hour_prices)
                 ])
+
+
 app.layout = html.Div([dropdown,cards],style={'background-color': '#D0DBEA','min-width':'600px'})
 
 # # график для прогноза цен
@@ -71,7 +73,7 @@ def update_graph(tab,date):
                  "value": "Цена РСВ, руб/МВт*ч",
                     'variable':'Станция'
                     },
-                template="plotly_white")
+                template="plotly_white",markers=True)
     figure.update_xaxes(
         dtick="D",
         tickformat="%d%b",
@@ -96,7 +98,7 @@ def update_graph(tab,date):
                "date": "Час суток",
                  "value": "Цена РСВ, руб/МВт*ч",
                     'variable':'Станция'
-                    },template="plotly_white")
+                    },template="plotly_white",markers=True)
     figure_2.update_xaxes(
         ticktext=[i for i in range(24)],
         showgrid=True,showline=True, linewidth=0.5, linecolor='black', gridcolor='#DDE6F3')
