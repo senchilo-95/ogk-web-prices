@@ -11,17 +11,18 @@ import pandas as pd
 from django_plotly_dash import DjangoDash
 import sqlalchemy as sa
 from .datasets import df_st
-engine = sa.create_engine('sqlite:///db.sqlite3')
-connection=engine.connect()
 import datetime
 import plotly.figure_factory as ff
 import locale
+
+engine = sa.create_engine('sqlite:///db.sqlite3')
+connection=engine.connect()
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
-
-
 
 app = DjangoDash('SimpleExample',add_bootstrap_links=True)   # replaces dash.Dash
 dict_dates = {1:'янв',2:'фев',3:'мар',4:'апр',5:'мая',6:'июн',7:'июл',8:'авг',9:'сен',10:'окт',11:'ноя',12:'дек'}
+dict_dates_full = {1:'января',2:'февраля',3:'марта',4:'апреля',5:'мая',6:'июня',7:'июля',8:'августа',9:'сентября',10:'октября',11:'ноября',12:'декабря'}
+
 range_of_dates=pd.date_range(start=df_st.index[0].date(),end=df_st.index[-1].date(),freq='1D')
 dates_list = ['{} {}'.format(idx.day,dict_dates[idx.month]) for idx in range_of_dates]
 df_st_m = df_st.resample('1D').mean()
@@ -62,9 +63,9 @@ collapse = html.Div(
         dbc.Button(
             "Изменение цены",
             id="collapse-button",
-            className="mb-3",
+            className="d-grid gap-2",
             color="primary",
-            n_clicks=0,
+            n_clicks=0, style = {'width':'100%'}
         ),
         dbc.Collapse(
             dbc.Card(table),
@@ -139,7 +140,7 @@ def update_graph(tab,date):
     df_st_h = df_st[(df_st.index.year==y)&(df_st.index.month==m)&(df_st.index.day==d)]
     figure_2 = px.line(
                 df_st_h[tab],
-                title="Почасовые цены РСВ. {} {}".format(d,dict_dates[m]),
+                title="Почасовые цены РСВ на "+"{} {}".format(d,dict_dates_full[m]),
                 labels={
                "date": "Час суток",
                  "value": "Цена РСВ, руб/МВт*ч",
