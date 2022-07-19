@@ -56,12 +56,11 @@ day_prices = dbc.Card([dcc.Graph(id='my-graph1')])
 hour_prices = dbc.Card([dcc.Graph(id='my-graph2'),dbc.CardBody(slider)])
 date_for_table_1 = df_st_m.index[-1]
 date_for_table_2 = df_st_m.index[-2]
-print(date_for_table_1,date_for_table_2,df_st_m.iloc[-1],df_st_m.iloc[-2])
-table =dbc.Card([dcc.Graph(id='my-table')])
+table =dbc.Card([dcc.Graph(id='my-table',config={'displayModeBar': True,'scrollZoom':False,'staticPlot':True})])
 collapse = html.Div(
     [
         dbc.Button(
-            "Анализ цены",
+            "Изменение цены",
             id="collapse-button",
             className="mb-3",
             color="primary",
@@ -86,12 +85,6 @@ cards = html.Div(
             className="mb-3",style={'min-width':'600px'})
     ]
 )
-
-# cards = dbc.Col([
-#         dbc.Row(day_prices),
-#         dbc.Row(collapse),
-#         dbc.Row(hour_prices)
-#                 ])
 
 app.layout = html.Div([dropdown,cards],style={'background-color': '#D0DBEA','min-width':'600px'})
 
@@ -121,6 +114,19 @@ def update_graph(tab,date):
         showgrid=True,showline=True, linewidth=0.1, linecolor='black', gridcolor='#DDE6F3'
         )
     figure.update_yaxes(showgrid=True,showline=True, linewidth=0.1, linecolor='black', gridcolor='#DDE6F3')
+    df_st_d = pd.DataFrame(df_st[tab].resample('1D').mean())
+    df_st_d['weekday']=df_st_d.index.weekday
+    holidays=df_st_d[df_st_d['weekday'].isin([5,6])].index
+    delta = datetime.timedelta(minutes=60*12)
+    for i in range(0,len(holidays),2):
+        try:
+            figure.add_vrect(x0=holidays[i]-delta, x1=holidays[i]+datetime.timedelta(days=2)-delta,
+              annotation_text="Вых.", annotation_position="top left",
+              fillcolor="#8DB1E1", opacity=0.2, line_width=0.1)
+        except:
+            figure.add_vrect(x0=holidays[i]-delta,x1=holidays[i]+datetime.timedelta(days=1)-delta,
+                  annotation_text="Вых.", annotation_position="top left",
+                  fillcolor="#8DB1E1", opacity=0.2, line_width=0.1)
     ticktext=[datetime.datetime.strptime(str(elem.date()), "%Y-%m-%d").strftime('%d-%b')
             for elem in df_st_m.index]
     figure.update_xaxes(tickformat='%d-%b')
@@ -155,5 +161,4 @@ def update_graph(tab,date):
 
     table_figure = ff.create_table(for_table)
     return figure,figure_2,table_figure
-#
 
