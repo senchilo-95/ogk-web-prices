@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     'django.contrib.staticfiles',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
-    'bootstrap4',
-    'aldjemy'
+    'aldjemy',
+    'bootstrap4'
 ]
 
 
