@@ -21,7 +21,6 @@ locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 
 
 app = DjangoDash('SimpleExample',add_bootstrap_links=True)   # replaces dash.Dash
-# df_st=df_h.copy()
 dict_dates = {1:'янв',2:'фев',3:'мар',4:'апр',5:'мая',6:'июн',7:'июл',8:'авг',9:'сен',10:'окт',11:'ноя',12:'дек'}
 range_of_dates=pd.date_range(start=df_st.index[0].date(),end=df_st.index[-1].date(),freq='1D')
 dates_list = ['{} {}'.format(idx.day,dict_dates[idx.month]) for idx in range_of_dates]
@@ -55,11 +54,9 @@ slider=dcc.Slider(len(df_st_m)-14, len(df_st_m)-1,1, value=len(df_st_m)-1,
 slider = html.Div([slider], style={'height': '50px'})
 day_prices = dbc.Card([dcc.Graph(id='my-graph1')])
 hour_prices = dbc.Card([dcc.Graph(id='my-graph2'),dbc.CardBody(slider)])
-date_for_table = df_st.index[-1]
-m= date_for_table.month
-d= date_for_table.day
-cols_for_table=['Станция', 'Цена {} {}, руб./ МВт*ч'.format(d,dict_dates[m]),
-                  'Цена {} {}, руб./ МВт*ч'.format(d,dict_dates[m]),'Изменение цены, %']
+date_for_table_1 = df_st_m.index[-1]
+date_for_table_2 = df_st_m.index[-2]
+print(date_for_table_1,date_for_table_2,df_st_m.iloc[-1],df_st_m.iloc[-2])
 table =dbc.Card([dcc.Graph(id='my-table')])
 collapse = html.Div(
     [
@@ -150,12 +147,12 @@ def update_graph(tab,date):
     figure.update_layout(height=400,showlegend=False)
     figure_2.update_layout(height=400,showlegend=False)
 
-    for_table = [['Станция', 'Цена {} {}, руб./ МВт*ч'.format(d,dict_dates[m]),
-                  'Цена {} {}, руб./ МВт*ч'.format(d,dict_dates[m]),'Изменение цены, %']]
-    df_for_table = pd.DataFrame(df_st[tab])
-
+    for_table = [['Станция', '{} {}, руб./ МВт*ч'.format(date_for_table_2.day,dict_dates[date_for_table_2.month]),
+                  '{} {}, руб./ МВт*ч'.format(date_for_table_1.day,dict_dates[date_for_table_1.month]),'Изменение цены, %']]
+    df_for_table = pd.DataFrame(df_st_m[tab])
     for tab in df_for_table.columns:
-        for_table.append([tab,np.round(df_for_table[tab].iloc[-1]),np.round(df_for_table[tab].iloc[-2]),np.round(100*(df_for_table[tab].iloc[-2]-df_for_table[tab].iloc[-1])/df_for_table[tab].iloc[-2],2)])
+        for_table.append([tab,np.round(df_for_table[tab].iloc[-2]),np.round(df_for_table[tab].iloc[-1]),np.round(100*(df_for_table[tab].iloc[-1]-df_for_table[tab].iloc[-2])/df_for_table[tab].iloc[-2],2)])
+
     table_figure = ff.create_table(for_table)
     return figure,figure_2,table_figure
 #
