@@ -7,6 +7,7 @@ import io
 import datetime
 import time
 
+from sqlalchemy.orm import sessionmaker, scoped_session
 dict_stations ={
     'Череповецкая ГРЭС':529874,
     'Адлерская ТЭС':[300347,300323],
@@ -24,6 +25,8 @@ stations = list(dict_stations.keys())
 
 engine = sa.create_engine('sqlite:///db.sqlite3')
 connection=engine.connect()
+
+
 
 command=("""
 SELECT date
@@ -113,6 +116,10 @@ df = pd.read_sql_query(command,connection)
 connection.close()
 df_st=pd.pivot_table(df,index='date',columns='station',values='price')
 df_st.index=pd.to_datetime(df_st.index)
+date_past=datetime.datetime.now().date()-datetime.timedelta(days=30)
+date_past=(pd.to_datetime(date_past))
+df_st=df_st[df_st.index>=date_past]
+
 
 
 
