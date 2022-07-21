@@ -45,7 +45,7 @@ tommorow = datetime.datetime.today()+datetime.timedelta(days=1)
 day_now=datetime.datetime.today()
 print('Дата в базе = {}, дата текущая = {} час = {}'.format(end_date,day_now.date(), time_hour))
 
-if (day_now.date()>end_date) or (tommorow.date()>end_date and time_hour>=18):
+if (day_now.date()>end_date) or (tommorow.date()>end_date and time_hour>=17):
     date_end_for_range = tommorow.date()
     print(f'Загрузка данных с {end_date}')
     # try:
