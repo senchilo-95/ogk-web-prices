@@ -10,13 +10,12 @@ import time
 
 sched = BlockingScheduler()
 
-@sched.scheduled_job('interval', minutes=3)
-def timed_job():
-    print('This job is run every three minutes.')
+# @sched.scheduled_job('interval', minutes=3)
+# def timed_job():
+#     print('This job is run every three minutes.')
 
-@sched.scheduled_job('cron',hour=13)
+@sched.scheduled_job('cron',hour=14, minute=40)
 def scheduled_job():
-
     dict_stations ={
     'Череповецкая ГРЭС':529874,
     'Адлерская ТЭС':[300347,300323],
@@ -107,5 +106,6 @@ def scheduled_job():
             df_t.columns=['date','station','price']
             print(df_t)
             df_t.to_sql('dash_RSV_prices_rsv_from_ats', con=engine, index=True, index_label='id', if_exists='append')
+            connection.close()
 
 sched.start()
