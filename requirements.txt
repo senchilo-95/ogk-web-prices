@@ -1,4 +1,5 @@
 aldjemy==2.6
+apscheduler==3.9.1
 asgiref==3.5.2
 attrs==21.4.0
 autobahn==22.6.1
