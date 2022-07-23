@@ -14,7 +14,7 @@ sched = BlockingScheduler()
 # def timed_job():
 #     print('This job is run every three minutes.')
 
-@sched.scheduled_job('cron',hour=14, minute=40)
+@sched.scheduled_job('cron',hour='8-15')
 def scheduled_job():
     dict_stations ={
     'Череповецкая ГРЭС':529874,
