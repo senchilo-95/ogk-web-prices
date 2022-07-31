@@ -67,7 +67,7 @@ end_date_now = pd.to_datetime(datetime.datetime.now()).date()
 number_days = (end_date_now-start_date).days + 1
 dates = [(start_date + datetime.timedelta(days=i)) for i in range(number_days)]
 for oes in oes_list:
-    urls = r'https://www.so-ups.ru/functioning/ees/{}/{}-indicators/{}-gen-consump-hour/?tx_mscdugraph_pi%5Bcontroller%5D=Graph&tx_mscdugraph_pi%5Baction%5D=fullview&tx_mscdugraph_pi%5BviewDate%5D={}'
+    urls = r'https://www.so-ups.ru/functioning/ees/{}/{}-indicators/{}-gen-consump-plan/?tx_mscdugraph_pi%5Bcontroller%5D=Graph&tx_mscdugraph_pi%5Baction%5D=fullview&tx_mscdugraph_pi%5BviewDate%5D={}'
     for url in dates:
         now1 = urls.format(oes, oes, oes, url)
         df1 = power_datatable(now1, oes)
