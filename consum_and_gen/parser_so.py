@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import datetime
 import time
-from sqlalchemy import create_engine
-engine = create_engine('sqlite:///consum.sqlite3', echo = True)
+import sqlalchemy as sa
+engine = sa.create_engine('sqlite:///consum.sqlite3', echo = True)
 connection = engine.connect()
 command=("""
 SELECT *
@@ -14,7 +14,7 @@ FROM [generation_and_consumption]
 df = pd.read_sql_query(command,connection)
 end_time=(pd.to_datetime(df['date'].dropna().values[-1]))
 end_date = end_time.date()
-connection.close()
+# connection.close()
 # result=engine.execute("""
 # CREATE TABLE "generation_and_consumption" (
 #    date DATETIME,
@@ -36,7 +36,7 @@ oes_list = (list(oes_dict.keys()))
 
 def power_datatable(url,oes):
     url = url
-    response = requests.get(url, stream=True)
+    response = requests.get(url, stream=True, verify=False)
     soup = BeautifulSoup(response.content, 'html.parser')
     items = soup.find_all('div', {'class':'big-chart'})
     items=str(items)
@@ -63,7 +63,10 @@ def power_datatable(url,oes):
     return data_power
 
 start_date = pd.to_datetime(end_date).date()
-end_date_now = pd.to_datetime(datetime.datetime.now()).date()
+if datetime.datetime.now().hour >=14:
+    end_date_now = pd.to_datetime(datetime.datetime.now()+datetime.timedelta(days=1)).date()
+else:
+    end_date_now = pd.to_datetime(datetime.datetime.now()).date()
 number_days = (end_date_now-start_date).days + 1
 dates = [(start_date + datetime.timedelta(days=i)) for i in range(number_days)]
 for oes in oes_list:
@@ -71,17 +74,18 @@ for oes in oes_list:
     for url in dates:
         now1 = urls.format(oes, oes, oes, url)
         df1 = power_datatable(now1, oes)
-        time.sleep(5)
-        connection = engine.connect()
+        # time.sleep(5)
+        # connection = engine.connect()
         df1.to_sql('generation_and_consumption', con=connection, index=False, if_exists='append')
-        connection.close()
+        # connection.close()
 
 command=("""
 SELECT *
 FROM [generation_and_consumption]
 """)
-connection = engine.connect()
+# connection = engine.connect()
 consum_df = pd.read_sql_query(command,connection)
 consum_df['date']=pd.to_datetime(consum_df['date'])
-connection.close()
+# print(consum_df)
+# connection.close()
 

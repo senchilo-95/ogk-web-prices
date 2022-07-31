@@ -46,16 +46,18 @@ tommorow = datetime.datetime.today()+datetime.timedelta(days=1)
 day_now=datetime.datetime.today()
 print('Дата в базе = {}, дата текущая = {} час = {}'.format(end_date,day_now.date(), time_hour))
 
-if (day_now.date()>end_date) or (tommorow.date()>end_date and time_hour>=17):
-    date_end_for_range = tommorow.date()
-    print(f'Загрузка данных с {end_date}')
-    # try:
-    range_dates=pd.date_range(start=end_date+datetime.timedelta(days=1),end=date_end_for_range)
-    print(range_dates)
-    data_df = pd.DataFrame()
+# if (day_now.date()>end_date) or (tommorow.date()>end_date and time_hour>=14):
+# try:
+date_end_for_range = tommorow.date()
+print(f'Загрузка данных с {end_date}')
+# try:
+range_dates=pd.date_range(start=end_date+datetime.timedelta(days=1),end=date_end_for_range)
+print(range_dates)
+data_df = pd.DataFrame()
+try:
     for today in range_dates:
         # try:
-        print(today)
+        # print(today)
         # try:
         y = today.year
         m=today.month
@@ -95,17 +97,16 @@ if (day_now.date()>end_date) or (tommorow.date()>end_date and time_hour>=17):
             test_dict[i]=prices
         df_t=pd.DataFrame(test_dict).T
         def fill_date(row):
-            return datetime.datetime(year=int(y),month=int(m),day=(d),hour=int(row['index']))
+            return datetime.datetime(year=int(y),month=int(m),day=int(d),hour=int(row['index']))
         df_t.reset_index(inplace=True)
         df_t['date']=df_t.apply(fill_date,axis=1)
         df_t=df_t.drop(columns='index')
         df_t=df_t.melt(id_vars='date',var_name='station')
         df_t.columns=['date','station','price']
         # data_df=pd.concat([data_df,df_t],axis=0)
-        print(df_t)
         df_t.to_sql('dash_RSV_prices_rsv_from_ats', con=engine, index=True, index_label='id', if_exists='append')
-    # except:
-    #     pass
+except:
+    pass
 
 
 command=("""

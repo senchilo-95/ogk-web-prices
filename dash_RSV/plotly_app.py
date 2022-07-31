@@ -9,20 +9,8 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 import pandas as pd
 import locale
-import sqlalchemy as sa
-engine = sa.create_engine('sqlite:///consum.sqlite3')
-connection=engine.connect()
-command=("""
-SELECT *
-FROM [dash_RSV_prices_rsv_from_ats]
-""")
-df = pd.read_sql_query(command,connection)
-connection.close()
-df_st=pd.pivot_table(df,index='date',columns='station',values='price')
-df_st.index=pd.to_datetime(df_st.index)
-date_past=datetime.datetime.now().date()-datetime.timedelta(days=30)
-date_past=(pd.to_datetime(date_past))
-df_st=df_st[df_st.index>=date_past]
+from .datasets import df_st
+
 
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 
