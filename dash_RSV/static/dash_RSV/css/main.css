@@ -1,3 +1,40 @@
 body{
     background-color: #7F8FA4; /* Цвет фона веб-страницы */
    }
+
+aside {
+    float: top;
+    background: #
+    width: 5%;
+    height: 10vh;
+    color: #fff;
+    border-right: 5px solid #4d4d4d;
+}
+
+
+aside h3 {
+    margin-top: 0px;
+    font-size: 20px;
+}
+
+aside ul li a {
+    margin-left: 50px;
+    font-size: 15px;
+    text-align: left;
+    list-style:none;
+}
+
+aside ul {list-style: none}
+aside ul li {
+    color: #fff;
+    display: inline;
+    margin-top: 20px;
+    margin-left: 20px;
+    transition: transform .6s ease;
+}
+
+aside ul li:hover, aside ul a:hover {
+    color: #eb5959;
+    text-decoration: none;
+    transform: scale(1.05);
+}

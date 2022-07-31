@@ -72,7 +72,6 @@ for oes in oes_list:
         now1 = urls.format(oes, oes, oes, url)
         df1 = power_datatable(now1, oes)
         time.sleep(5)
-        # print(df1)
         connection = engine.connect()
         df1.to_sql('generation_and_consumption', con=connection, index=False, if_exists='append')
         connection.close()
