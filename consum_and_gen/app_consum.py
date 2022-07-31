@@ -1,4 +1,4 @@
-import pandas as pd
+
 from django_plotly_dash import DjangoDash
 import datetime
 import dash_bootstrap_components as dbc
@@ -8,6 +8,7 @@ import plotly.express as px
 import locale
 import plotly.graph_objects as go
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+import pandas as pd
 
 
 dict_dates = {1:'янв',2:'фев',3:'мар',4:'апр',5:'мая',6:'июн',7:'июл',8:'авг',9:'сен',10:'окт',11:'ноя',12:'дек'}
