@@ -1,30 +1,31 @@
-from dash import dash_table
+import numpy as np
+import plotly.express as px
+from dash.dependencies import Input, Output, State
+from django_plotly_dash import DjangoDash
+import datetime
 import plotly.figure_factory as ff
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
-# from dash import html, dcc
-import numpy as np
-import plotly.express as px
-from dash.dependencies import Input, Output, State
 import pandas as pd
-from django_plotly_dash import DjangoDash
-import sqlalchemy as sa
-from .datasets import df_st
-import datetime
-import plotly.figure_factory as ff
 import locale
-from .app_consum import App_consum, consum_df_gen_h,consum_df_gen_d,consum_df_cons_h,consum_df_cons_d
-from .app import App
-
+import sqlalchemy as sa
+engine = sa.create_engine('sqlite:///consum.sqlite3')
+connection=engine.connect()
+command=("""
+SELECT *
+FROM [dash_RSV_prices_rsv_from_ats]
+""")
+df = pd.read_sql_query(command,connection)
+connection.close()
+df_st=pd.pivot_table(df,index='date',columns='station',values='price')
+df_st.index=pd.to_datetime(df_st.index)
+date_past=datetime.datetime.now().date()-datetime.timedelta(days=30)
+date_past=(pd.to_datetime(date_past))
+df_st=df_st[df_st.index>=date_past]
 
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 
-app = DjangoDash('SimpleExample',add_bootstrap_links=True)
-app.layout = html.Div([
-    dcc.Location(id = 'url', refresh = False),
-    html.Div(id = 'page-content')
-])
 
 dict_dates = {1:'янв',2:'фев',3:'мар',4:'апр',5:'мая',6:'июн',7:'июл',8:'авг',9:'сен',10:'окт',11:'ноя',12:'дек'}
 dict_dates_full = {1:'января',2:'февраля',3:'марта',4:'апреля',5:'мая',6:'июня',7:'июля',8:'августа',9:'сентября',10:'октября',11:'ноября',12:'декабря'}
@@ -58,18 +59,48 @@ slider=dcc.Slider(len(df_st_m)-14, len(df_st_m)-1,1, value=len(df_st_m)-1,
     included=False,
     id='date_slider'
 )
-
+slider = html.Div([slider], style={'height': '50px'})
+day_prices = dbc.Card([dcc.Graph(id='my-graph1')])
+hour_prices = dbc.Card([dcc.Graph(id='my-graph2'),dbc.CardBody(slider)])
 date_for_table_1 = df_st_m.index[-1]
 date_for_table_2 = df_st_m.index[-2]
+table =dbc.Card([dcc.Graph(id='my-table',config={'displayModeBar': True,'scrollZoom':False,'staticPlot':True})])
+collapse = html.Div(
+    [
+        dbc.Button(
+            "Изменение цены",
+            id="collapse-button",
+            className="d-grid gap-2",
+            color="primary",
+            n_clicks=0, style = {'width':'100%'}
+        ),
+        dbc.Collapse(
+            dbc.Card(table),
+            id="collapse",
+            is_open=False,
+        ),
+    ]
+)
 
-@app.callback(Output('page-content', 'children'),[Input('url', 'pathname')])
-def display_page(pathname):
-    if pathname == '/app':
-        return App()
-    if pathname == '/app_consum':
-        return App_consum()
-    else:
-        return App()
+cards = html.Div(
+    [
+        dbc.Card(
+            dbc.CardBody(day_prices),
+            className="mb-3",style={'min-width':'600px'}),
+        dbc.Card(dbc.CardBody(collapse),
+            className="mb-3",style={'min-width':'600px'}),
+        dbc.Card(dbc.CardBody(hour_prices),
+            className="mb-3",style={'min-width':'600px'})
+    ]
+)
+
+locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+
+app = DjangoDash('SimpleExample',add_bootstrap_links=True)
+app.layout = html.Div([dropdown,cards],style={'background-color': '#D0DBEA','min-width':'600px'})
+
+
+
 @app.callback(Output("collapse", "is_open"),
     [Input("collapse-button", "n_clicks")],[State("collapse", "is_open")],)
 def toggle_collapse(n, is_open):
@@ -144,50 +175,8 @@ def update_graph(tab,date):
     table_figure = ff.create_table(for_table)
     return figure,figure_2,table_figure
 
-@app.callback([Output('my-graph1', 'figure'),Output('my-graph2', 'figure')],
-              [Input('tabs-with-classes-consum', 'value'),Input('date_slider', 'value')])
-def update_graph(tab,date):
-    figure = px.line(
-                 consum_df_gen_d[tab],
-                title="Среднесуточное потребление",
-                labels={
-               "date": "Дата. Выберите период.",
-                 "value": "Потребление, МВт*ч",
-                    'variable':'ОЭС'
-                    },
-                template="plotly_white",markers=True)
-    figure.update_xaxes(
-        dtick="D",
-        tickformat="%d%b",
-        rangeslider_visible=True,
-        showgrid=True,showline=True, linewidth=0.1, linecolor='black', gridcolor='#DDE6F3'
-        )
-    figure.update_yaxes(showgrid=True,showline=True, linewidth=0.1, linecolor='black', gridcolor='#DDE6F3')
 
 
-    ticktext=[datetime.datetime.strptime(str(elem.date()), "%Y-%m-%d").strftime('%d-%b')
-            for elem in consum_df_gen_d.index]
-    figure.update_xaxes(tickformat='%d-%b')
-    figure.update_xaxes(tickvals=consum_df_gen_d.index)
-    figure.update_xaxes(ticktext=ticktext)
-    date_for_slider = consum_df_gen_d.index[date]
-    y=date_for_slider.year
-    m=date_for_slider.month
-    d=date_for_slider.day
-    consum_df_gen_now = consum_df_gen_h[(consum_df_gen_h.index.year==y)&(consum_df_gen_h.index.month==m)&(consum_df_gen_h.index.day==d)]
 
-    figure.update_layout(height=400,showlegend=False)
-    figure_2 = px.line(
-        consum_df_gen_now[tab],
-        title="Почасовое потребление на " + "{} {}".format(d, dict_dates_full[m]),
-        labels={
-            "date": "Час суток",
-            "value": "Потребление, МВт*ч",
-            'variable': 'ОЭС'
-        }, template="plotly_white", markers=True)
-    figure_2.update_xaxes(
-        ticktext=[i for i in range(24)],
-        showgrid=True, showline=True, linewidth=0.5, linecolor='black', gridcolor='#DDE6F3')
-    figure_2.update_yaxes(showgrid=True, showline=True, linewidth=0.5, linecolor='black', gridcolor='#DDE6F3')
-    figure_2.update_layout(height=400, showlegend=False)
-    return figure,figure_2
+
+

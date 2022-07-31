@@ -37,6 +37,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'dpd_static_support',
     'dash_RSV',
+    'consum_and_gen',
     'import_export',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -101,7 +102,7 @@ ASGI_APPLICATION = 'ogk_web.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'consum.sqlite3',
     }
 }
 
