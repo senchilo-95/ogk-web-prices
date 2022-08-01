@@ -4,9 +4,7 @@ body{
 
 aside {
     float: top;
-    background: #
-    width: 5%;
-    height: 10vh;
+    height: 100px;
     color: #fff;
     border-right: 5px solid #4d4d4d;
 }
