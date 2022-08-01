@@ -16,7 +16,7 @@ aside h3 {
 }
 
 aside ul li a {
-    margin-left: 50px;
+    margin-left: 0px;
     font-size: 15px;
     text-align: left;
     list-style:none;
@@ -27,7 +27,7 @@ aside ul li {
     color: #fff;
     display: inline;
     margin-top: 20px;
-    margin-left: 20px;
+    margin-left: 0px;
     transition: transform .6s ease;
 }
 

@@ -51,6 +51,20 @@ ues_tabs = dcc.Tabs(
         )
 
     ])
+
+dropdown = dcc.Dropdown(
+    id = 'oes-dropdown',
+    searchable=False,
+    value='ОЭС Юга',
+    options=[
+{'label' : 'ОЭС Юга', 'value' : 'ОЭС Юга'},
+{'label' : 'ОЭС Северо-Запада', 'value' : 'ОЭС Северо-Запада'},
+{'label' : 'ОЭС Центра', 'value' : 'ОЭС Центра'},
+{'label' : 'ОЭС Урала', 'value' : 'ОЭС Урала'},
+{'label' : 'ОЭС Средней Волги', 'value' : 'ОЭС Средней Волги'}
+    ],style={'width':'400px', 'align-items': 'center', 'justify-content': 'center'}
+)
+
 consum_df_gen_h = pd.pivot_table(consum_df,index='date',columns='ups',values='consumption')
 consum_df_cons_h = pd.pivot_table(consum_df,index='date',columns='ups',values='generation')
 
@@ -77,10 +91,10 @@ cards = html.Div(
 )
 
 app = DjangoDash('ConsumApp',add_bootstrap_links=True)
-app.layout =  html.Div([ues_tabs,cards],style={'background-color': '#D0DBEA','min-width':'600px'})
+app.layout =  html.Div([dropdown,cards],style={'background-color': '#D0DBEA','min-width':'600px'})
 
 @app.callback([Output('my-graph1', 'figure'),Output('my-graph2', 'figure')],
-              [Input('tabs-with-classes-consum', 'value'),Input('date_slider', 'value')])
+              [Input('oes-dropdown', 'value'),Input('date_slider', 'value')])
 def update_graph(tab,date):
     figure = px.line(
                 title="Среднесуточное потребление и генерация",
