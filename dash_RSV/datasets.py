@@ -114,6 +114,7 @@ SELECT *
 FROM [dash_RSV_prices_rsv_from_ats]
 """)
 
+
 df = pd.read_sql_query(command,connection)
 connection.close()
 df_st=pd.pivot_table(df,index='date',columns='station',values='price')
