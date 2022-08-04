@@ -1,0 +1,6 @@
+{% extends 'dash_RSV/layout.html' %}
+{% block title %}Потребление и генерация по ОЭС{% endblock %}
+{% block content %}
+    {%load plotly_dash%}
+	{%plotly_app  name="ConsumApp" ratio=2.2%}
+{% endblock %}
