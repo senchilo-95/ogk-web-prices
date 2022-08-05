@@ -59,9 +59,9 @@ def power_datatable(url,oes,end_t):
 
 sched = BlockingScheduler()
 
-# @sched.scheduled_job('interval', minutes=3)
-# def timed_job():
-#     print('This job is run every three minutes.')
+@sched.scheduled_job('interval', minutes=3)
+def timed_job():
+    print('This job is run every three minutes.')
 
 @sched.scheduled_job('interval',minutes=2)
 def scheduled_job():
@@ -106,6 +106,7 @@ def scheduled_job():
                 df1.to_sql('generation_and_consumption', con=connection, index=False, if_exists='append')
                 # connection.close()
     except:
+        print('something wrong')
         pass
 
 
@@ -186,9 +187,10 @@ def scheduled_job():
             # data_df=pd.concat([data_df,df_t],axis=0)
             df_t.to_sql('dash_RSV_prices_rsv_from_ats', con=engine, index=True, index_label='id', if_exists='append')
     except:
+        print('something wrong')
         pass
 
-    print('good job')
 
-scheduled_job()
+
+# scheduled_job()
 sched.start()
