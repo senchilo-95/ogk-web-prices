@@ -139,62 +139,62 @@ def scheduled_job():
     range_dates = pd.date_range(start=end_date + datetime.timedelta(days=1), end=date_end_for_range)
     print(range_dates)
     data_df = pd.DataFrame()
-    try:
-        for today in range_dates:
-            # try:
-            # print(today)
-            # try:
-            y = today.year
-            m = today.month
-            d = today.day
+    # try:
+    for today in range_dates:
+        # try:
+        # print(today)
+        # try:
+        y = today.year
+        m = today.month
+        d = today.day
 
-            if m < 10: m = '0' + str(m)
-            if d < 10: d = '0' + str(d)
-            excel_href = ''
-            url = 'https://www.atsenergo.ru/nreport?rname=big_nodes_prices_pub&rdate=2022{}{}'.format(m, d)
-            response = requests.get(url, verify=False)
-            soup = BeautifulSoup(response.text, 'lxml')
-            #     prices = []
-            for a in soup.find_all('a', href=True, title=True):
-                if 'Заархивированный' in a['title']:
-                    excel_href = a
+        if m < 10: m = '0' + str(m)
+        if d < 10: d = '0' + str(d)
+        excel_href = ''
+        url = 'https://www.atsenergo.ru/nreport?rname=big_nodes_prices_pub&rdate=2022{}{}'.format(m, d)
+        response = requests.get(url, verify=False)
+        soup = BeautifulSoup(response.text, 'lxml')
+        #     prices = []
+        for a in soup.find_all('a', href=True, title=True):
+            if 'Заархивированный' in a['title']:
+                excel_href = a
 
-            link_end = str(excel_href).split('"')[1]
-            link_end.replace('amp;', '')
-            link = 'https://www.atsenergo.ru/nreport' + link_end
-            print(link)
-            time1 = time.time()
-            r = requests.get(link, stream=True, verify=False)
-            time2 = time.time()
-            print('Запрос=', time2 - time1)
-            fh = io.BytesIO(r.content)
+        link_end = str(excel_href).split('"')[1]
+        link_end.replace('amp;', '')
+        link = 'https://www.atsenergo.ru/nreport' + link_end
+        print(link)
+        time1 = time.time()
+        r = requests.get(link, stream=True, verify=False)
+        time2 = time.time()
+        print('Запрос=', time2 - time1)
+        fh = io.BytesIO(r.content)
 
-            test_dict = {}
+        test_dict = {}
 
-            for i in range(24):
-                df = pd.io.excel.read_excel(fh, sheet_name=i, header=2, usecols=[0, 5], index_col=0)
-                time3 = time.time()
-                print(f'Час {i} Загрузка в файл', np.round(time3 - time2), ' секунд')
-                prices = {}
-                for st in stations:
-                    prices[st] = float(df.loc[dict_stations[st]].mean())
-                test_dict[i] = prices
-            df_t = pd.DataFrame(test_dict).T
+        for i in range(24):
+            df = pd.io.excel.read_excel(fh, sheet_name=i, header=2, usecols=[0, 5], index_col=0)
+            time3 = time.time()
+            print(f'Час {i} Загрузка в файл', np.round(time3 - time2), ' секунд')
+            prices = {}
+            for st in stations:
+                prices[st] = float(df.loc[dict_stations[st]].mean())
+            test_dict[i] = prices
+        df_t = pd.DataFrame(test_dict).T
 
-            def fill_date(row):
-                return datetime.datetime(year=int(y), month=int(m), day=int(d), hour=int(row['index']))
+        def fill_date(row):
+            return datetime.datetime(year=int(y), month=int(m), day=int(d), hour=int(row['index']))
 
-            df_t.reset_index(inplace=True)
-            df_t['date'] = df_t.apply(fill_date, axis=1)
-            df_t = df_t.drop(columns='index')
-            df_t = df_t.melt(id_vars='date', var_name='station')
-            df_t.columns = ['date', 'station', 'price']
-            # data_df=pd.concat([data_df,df_t],axis=0)
-            df_t.to_sql('dash_RSV_prices_rsv_from_ats', con=engine, index=True, index_label='id', if_exists='append')
-    except:
-        print('something wrong')
-        pass
-    print('good job')
+        df_t.reset_index(inplace=True)
+        df_t['date'] = df_t.apply(fill_date, axis=1)
+        df_t = df_t.drop(columns='index')
+        df_t = df_t.melt(id_vars='date', var_name='station')
+        df_t.columns = ['date', 'station', 'price']
+        # data_df=pd.concat([data_df,df_t],axis=0)
+        df_t.to_sql('dash_RSV_prices_rsv_from_ats', con=engine, index=True, index_label='id', if_exists='append')
+    # except:
+    #     print('something wrong')
+    #     pass
+    # print('good job')
 
 
 # scheduled_job()
