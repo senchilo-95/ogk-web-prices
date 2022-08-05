@@ -63,12 +63,12 @@ def power_datatable(url, oes, end_t):
 sched = BlockingScheduler()
 
 
+# @sched.scheduled_job('interval', minutes=3)
+# def timed_job():
+#     print('This job is run every three minutes.')
+
+
 @sched.scheduled_job('interval', minutes=3)
-def timed_job():
-    print('This job is run every three minutes.')
-
-
-@sched.scheduled_job('cron', hour='14',minute='50')
 def scheduled_job():
     try:
         command = ("""
