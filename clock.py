@@ -152,7 +152,10 @@ def scheduled_job():
         if d < 10: d = '0' + str(d)
         excel_href = ''
         url = 'https://www.atsenergo.ru/nreport?rname=big_nodes_prices_pub&rdate=2022{}{}'.format(m, d)
-        response = requests.get(url, verify=False)
+        conn_timeout = 15
+        read_timeout = 300
+        timeouts = (conn_timeout, read_timeout)
+        response = requests.get(url, verify=False, timeout=timeouts)
         soup = BeautifulSoup(response.text, 'lxml')
         #     prices = []
         for a in soup.find_all('a', href=True, title=True):
