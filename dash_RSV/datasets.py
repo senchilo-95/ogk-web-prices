@@ -27,7 +27,7 @@ stations = list(dict_stations.keys())
 engine = sa.create_engine('sqlite:///consum.sqlite3')
 connection=engine.connect()
 #
-download_data=False
+download_data=True
 if download_data == True:
     command=("""
     SELECT date

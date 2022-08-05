@@ -1,2 +1,2 @@
-web: gunicorn ogk_web.wsgi --timeout 1200 --keep-alive 500 --log-level debug
+web: gunicorn ogk_web.wsgi --timeout 300 --keep-alive 300 --log-level debug
 
