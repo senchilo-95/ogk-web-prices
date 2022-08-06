@@ -7,6 +7,8 @@ import io
 import time
 import numpy as np
 import sqlalchemy as sa
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 engine = sa.create_engine('sqlite:///consum.sqlite3',connect_args={"check_same_thread": False}, echo=True)
 download_data = True
@@ -139,6 +141,11 @@ def scheduled_job():
     range_dates = pd.date_range(start=end_date + datetime.timedelta(days=1), end=date_end_for_range)
     print(range_dates)
     data_df = pd.DataFrame()
+    session = requests.Session()
+    retry = Retry(connect=3, backoff_factor=0.5)
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
     # try:
     for today in range_dates:
         # try:
@@ -155,7 +162,8 @@ def scheduled_job():
         conn_timeout = 15
         read_timeout = 300
         timeouts = (conn_timeout, read_timeout)
-        response = requests.get(url, verify=False, timeout=timeouts)
+        response =session.get(url)
+        # response = requests.get(url, verify=False, timeout=timeouts)
         soup = BeautifulSoup(response.text, 'lxml')
         #     prices = []
         for a in soup.find_all('a', href=True, title=True):
