@@ -157,7 +157,11 @@ def scheduled_job():
         read_timeout = 100
         timeouts = (conn_timeout, read_timeout)
         http.client.HTTPConnection.debuglevel = 1
-        response = requests.get(url, verify=False, timeout=timeouts)
+        proxies = {
+            'http': 'http://5.45.64.97:3128',
+            'https': 'http://5.45.64.97:3128',
+        }
+        response = requests.get(url, verify=False, timeout=timeouts,proxies=proxies)
         soup = BeautifulSoup(response.text, 'lxml')
         #     prices = []
         for a in soup.find_all('a', href=True, title=True):
