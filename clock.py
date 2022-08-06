@@ -161,7 +161,7 @@ def scheduled_job():
             'http': 'http://5.45.64.97:3128',
             'https': 'http://5.45.64.97:3128',
         }
-        response = requests.get(url, verify=False, timeout=timeouts,proxies=proxies)
+        response = requests.get(url, verify=False, timeout=timeouts)
         soup = BeautifulSoup(response.text, 'lxml')
         #     prices = []
         for a in soup.find_all('a', href=True, title=True):
