@@ -7,8 +7,7 @@ import io
 import time
 import numpy as np
 import sqlalchemy as sa
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
+import http
 
 engine = sa.create_engine('sqlite:///consum.sqlite3',connect_args={"check_same_thread": False}, echo=True)
 download_data = True
@@ -141,7 +140,6 @@ def scheduled_job():
     range_dates = pd.date_range(start=end_date + datetime.timedelta(days=1), end=date_end_for_range)
     print(range_dates)
     data_df = pd.DataFrame()
-
     # try:
     for today in range_dates:
         # try:
@@ -155,19 +153,11 @@ def scheduled_job():
         if d < 10: d = '0' + str(d)
         excel_href = ''
         url = 'https://www.atsenergo.ru/nreport?rname=big_nodes_prices_pub&rdate=2022{}{}'.format(m, d)
-        conn_timeout = 15
-        read_timeout = 300
+        conn_timeout = 100
+        read_timeout = 100
         timeouts = (conn_timeout, read_timeout)
-        session = requests.Session()
-        retry = Retry(connect=3, backoff_factor=0.5)
-        adapter = HTTPAdapter(max_retries=retry)
-        session.mount('http://', adapter)
-        session.mount('https://', adapter)
-        session.keep_alive = False
-        session.proxies = {"https": "47.100.104.247:8080", "http": "36.248.10.47:8080", }
-
-        response =session.get(url)
-        # response = requests.get(url, verify=False, timeout=timeouts)
+        http.client.HTTPConnection.debuglevel = 1
+        response = requests.get(url, verify=False, timeout=timeouts)
         soup = BeautifulSoup(response.text, 'lxml')
         #     prices = []
         for a in soup.find_all('a', href=True, title=True):
@@ -206,7 +196,6 @@ def scheduled_job():
         df_t.columns = ['date', 'station', 'price']
         # data_df=pd.concat([data_df,df_t],axis=0)
         df_t.to_sql('dash_RSV_prices_rsv_from_ats', con=engine, index=True, index_label='id', if_exists='append')
-
     # except:
     #     print('something wrong')
     #     pass
