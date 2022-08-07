@@ -75,6 +75,13 @@ MIDDLEWARE = [
     'django_plotly_dash.middleware.ExternalRedirectionMiddleware',#hereeee
 ]
 
+# settings.py
+
+DOWNLOADER_MIDDLEWARES = {
+    'ogk_web.middlewares.ProxyMiddleware': 100,  # Примечание для изменения имени_проекта
+    'scrapy.downloadermiddleware.httpproxy.HttpProxyMiddleware': 110,
+}
+
 ROOT_URLCONF = 'ogk_web.urls'
 
 TEMPLATES = [
