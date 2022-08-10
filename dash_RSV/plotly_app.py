@@ -10,8 +10,7 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import locale
 # from .datasets import df_st
-from .start_page_companies import modal_ogk,modal_tgk,modal_mos
-from .all_companies_data import ogk_df,tgk_df,mos_df
+from .start_page_companies import modal_ogk,modal_tgk,modal_mos,ogk_df,tgk_df,mos_df
 df_ogk_m = ogk_df.resample('1D').mean()
 df_tgk_m = tgk_df.resample('1D').mean()
 df_mos_m = mos_df.resample('1D').mean()
