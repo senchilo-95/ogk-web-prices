@@ -132,7 +132,7 @@ if download_data:
                 for h in range(24):
                     gen_prices[h] = prices_hour[h][g][gen_name]
                 gen_df = pd.DataFrame(gen_prices).T
-                gen_df_for_db = pd.melt(gen_df.reset_index(), ignore_index=False, var_name='station', value_name='price')
+                gen_df_for_db = pd.melt(gen_df.reset_index(), id_vars='index',var_name='station', value_name='price')
                 gen_df_for_db.columns = ['hour', 'station', 'price']
                 gen_df_for_db['gen_company'] = gen_name
                 gen_df_for_db['date'] = gen_df_for_db.apply(date_fill, axis=1)
