@@ -107,7 +107,7 @@ def update_graph(tab,date):
     figure.update_xaxes(
         dtick="D",
         tickformat="%d%b",
-        rangeslider_visible=True,
+        # rangeslider_visible=True,
         showgrid=True,showline=True, linewidth=0.1, linecolor='black', gridcolor='#DDE6F3'
         )
     figure.update_yaxes(showgrid=True,showline=True, linewidth=0.1, linecolor='black', gridcolor='#DDE6F3')

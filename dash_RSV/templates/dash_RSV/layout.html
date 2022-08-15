@@ -1,4 +1,6 @@
 {% load static %}
+{% load bootstrap4 %}
+{%load plotly_dash%}
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %} {% endblock %}</title>
+    <title>Анализ ОРЭМ</title>
     <link rel="stylesheet" href="{% static 'dash_RSV/css/main.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <script src="{% static 'dash_RSV/js/main.js' %}"></script>
@@ -29,18 +31,32 @@
 </head>
 <body>
 <aside>
-    <h3>Навигация</h3>
     <ul>
 
+        <!-- Tab links -->
 <div class="tab">
-  <form action="/dash_RSV"><button id="tablinks1" class="tablinks"><li><i class="fas fa-chart-line"></i> Цена РСВ</li></button></form>
-  <form action="/consum_and_gen"><button id="tablinks2" class="tablinks" ><li><i class="fas fa-bolt"></i> Генерация и потребление в ОЭС</li></button></form>
+  <button class="tablinks" onclick="openCity(event, 'London')"><li><i class="fas fa-chart-line"></i> Цена РСВ</li></button>
+  <button class="tablinks" onclick="openCity(event, 'Paris')"><li><i class="fas fa-bolt"></i> Генерация и потребление в ОЭС</li></button>
 </div>
+
+<div id="London" class="tabcontent">
+  <p>
+
+  {%plotly_app  name="SimpleExample" ratio=2.2%}
+  </p>
+</div>
+
+<div id="Paris" class="tabcontent">
+
+	{%plotly_app  name="ConsumApp" ratio=2.2%}
+
+</div>
+
     </ul>
+
 </aside>
 <main>
-
-  {% block content %} {% endblock %}
+<!-- Tab content -->
 
 </main>
 
