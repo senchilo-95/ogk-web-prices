@@ -9,6 +9,7 @@
     <title>{% block title %} {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'dash_RSV/css/main.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <script src="{% static 'dash_RSV/js/main.js' %}"></script>
     <!-- Yandex.Metrika counter -->
 
 <script type="text/javascript" >
@@ -30,13 +31,17 @@
 <aside>
     <h3>Навигация</h3>
     <ul>
-        <a href="/dash_RSV"><li><i class="fas fa-chart-line"></i> Цена РСВ</li></a>
-        <a href="/consum_and_gen"><li><i class="fas fa-bolt"></i> Генерация и потребление в ОЭС</li></a>
+
+<div class="tab">
+  <form action="/dash_RSV"><button id="tablinks1" class="tablinks"><li><i class="fas fa-chart-line"></i> Цена РСВ</li></button></form>
+  <form action="/consum_and_gen"><button id="tablinks2" class="tablinks" ><li><i class="fas fa-bolt"></i> Генерация и потребление в ОЭС</li></button></form>
+</div>
     </ul>
 </aside>
 <main>
-    {% block content %}
-{% endblock %}
+
+  {% block content %} {% endblock %}
+
 </main>
 
 </body>
