@@ -10,7 +10,7 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import locale
 # from .datasets import df_st
-from .start_page_companies import modal_ogk,modal_tgk,modal_mos,ogk_df,tgk_df,mos_df
+from .start_page_companies import modal_ogk_card as modal_ogk,modal_tgk_card as modal_tgk,modal_mos_card as modal_mos,ogk_df,tgk_df,mos_df
 df_ogk_m = ogk_df.resample('1D').mean()
 df_tgk_m = tgk_df.resample('1D').mean()
 df_mos_m = mos_df.resample('1D').mean()
@@ -26,12 +26,16 @@ dict_dates_full = {1:'января',2:'февраля',3:'марта',4:'апр�
 
 
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
-modal = html.Div([
-    modal_ogk,modal_tgk,modal_mos
-                    ],
-                 # style={'background-color':'red','height':'500px'}
+modal = html.Div(className='plotly_body',children=[
+    dbc.Row([
+        dbc.Col(modal_ogk),
+        dbc.Col(modal_tgk),
+        dbc.Col(modal_mos)
+                    ])
+                 ]# style={'background-color':'red','height':'500px'}
 )
 app = DjangoDash('SimpleExample',add_bootstrap_links=True)
+app.css.append_css({ "external_url" : "/static/dash_RSV/css/main.css" })
 app.layout = modal
 
 @app.callback(

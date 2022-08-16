@@ -1,6 +1,5 @@
 body{
     background-color: #7F8FA4; /* Цвет фона веб-страницы */
-    margin-right: 50px;
    }
 
 aside {
@@ -9,12 +8,15 @@ aside {
     color: #fff;
     margin: 0;
     padding: 0;
+    border: none;
 }
 
 
 aside div {
     margin: 0px;
     font-size: 20px;
+border:none;
+  margin-right:50px;
 }
 
 aside ul li a {
@@ -22,6 +24,7 @@ aside ul li a {
     font-size: 15px;
     text-align: left;
     list-style:none;
+
 }
 
 aside ul {margin:0;}
@@ -30,6 +33,7 @@ aside ul li {
     display: inline;
     margin: 0px;
     transition: transform .6s ease;
+
 
 }
 
@@ -71,13 +75,18 @@ overflow: hidden;
 /* Style the tab content */
 .tabcontent {
   display: none;
-  border: 1px solid #ccc;
+  border: 0px solid #ccc;
   border-top: none;
   margin:0;
   padding:0;
 }
 
 * {
-
     border-radius: 10px;
+}
+
+dash_rsv_body {
+background-color: black;
+margin:0;
+padding:0;
 }

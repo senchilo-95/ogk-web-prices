@@ -91,7 +91,8 @@ cards = html.Div(
 )
 
 app = DjangoDash('ConsumApp',add_bootstrap_links=True)
-app.layout =  html.Div([dropdown,cards],style={'background-color': '#D0DBEA','min-width':'600px'})
+app.css.append_css({ "external_url" : "/static/dash_RSV/css/main.css" })
+app.layout =  html.Div([dropdown,cards],style={'background-color': '#D0DBEA','min-width':'600px','width':'100%'})
 
 @app.callback([Output('my-graph1', 'figure'),Output('my-graph2', 'figure')],
               [Input('oes-dropdown', 'value'),Input('date_slider', 'value')])
