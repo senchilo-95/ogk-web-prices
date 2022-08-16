@@ -26,8 +26,11 @@ dict_dates_full = {1:'января',2:'февраля',3:'марта',4:'апр�
 
 
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
-modal = html.Div([modal_ogk,modal_tgk,modal_mos
-])
+modal = html.Div([
+    modal_ogk,modal_tgk,modal_mos
+                    ],
+                 # style={'background-color':'red','height':'500px'}
+)
 app = DjangoDash('SimpleExample',add_bootstrap_links=True)
 app.layout = modal
 

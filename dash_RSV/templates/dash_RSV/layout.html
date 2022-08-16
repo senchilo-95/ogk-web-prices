@@ -30,34 +30,35 @@
 
 </head>
 <body>
+<main>
+<!-- Tab content -->
 <aside>
     <ul>
 
         <!-- Tab links -->
 <div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'London')"><li><i class="fas fa-chart-line"></i> Цена РСВ</li></button>
-  <button class="tablinks" onclick="openCity(event, 'Paris')"><li><i class="fas fa-bolt"></i> Генерация и потребление в ОЭС</li></button>
-</div>
-
-<div id="London" class="tabcontent">
-  <p>
-
-  {%plotly_app  name="SimpleExample" ratio=2.2%}
-  </p>
-</div>
-
-<div id="Paris" class="tabcontent">
-
-	{%plotly_app  name="ConsumApp" ratio=2.2%}
+  <button class="tablinks" onclick="openCity(event, 'dash_RSV')"><li><i class="fas fa-chart-line"></i> Цена РСВ</li></button>
+  <button class="tablinks" onclick="openCity(event, 'consum_and_gen')"><li><i class="fas fa-industry"></i> Генерация и потребление в ОЭС</li></button>
+  <button class="tablinks" onclick="openCity(event, 'gen_types')"><li><i class="fas fa-bolt"></i> Генерация по источникам</li></button>
 
 </div>
 
+<div id="dash_RSV" class="tabcontent">
+
+    {%plotly_app  name="SimpleExample" ratio=2.2%}
+
+</div>
+
+<div id="consum_and_gen" class="tabcontent">
+	{%plotly_app  name="ConsumApp" ratio=1%}
+</div>
+
+<div id="gen_types" class="tabcontent">
+	<h3>Страница в разработке</h3>
+</div>
     </ul>
 
 </aside>
-<main>
-<!-- Tab content -->
-
 </main>
 
 </body>
