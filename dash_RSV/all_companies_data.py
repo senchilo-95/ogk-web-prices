@@ -34,7 +34,6 @@ dates = pd.read_sql_query(command,connection)
 end_date_db=(pd.to_datetime(dates.values[-1][0]).date())
 
 
-
 # sql = ('DROP TABLE prices_all;')
 # result = engine.execute(sql)
 
@@ -140,7 +139,9 @@ if download_data:
                     gen_df_for_db.drop(columns='hour', inplace=True)
                     all_comp_df = pd.concat([all_comp_df, gen_df_for_db])
                 all_comp_df.to_sql('prices_all', con=connection, index=False, if_exists='append')
-    except: pass
+    except:
+        print('Something Worng')
+        pass
 #
 
 command=("""
@@ -149,8 +150,10 @@ FROM [prices_all]
 """)
 
 all_prices_df = pd.read_sql_query(command,connection)
+
 all_prices_df['date'] = pd.to_datetime(all_prices_df['date'])
 ogk_df=(pd.pivot_table(all_prices_df[all_prices_df['gen_company']=='ПАО "ОГК-2"'],index='date',columns='station',values='price'))
 tgk_df=(pd.pivot_table(all_prices_df[all_prices_df['gen_company']=='ПАО "ТГК-1"'],index='date',columns='station',values='price'))
 mos_df=(pd.pivot_table(all_prices_df[all_prices_df['gen_company']=='ПАО "Мосэнерго"'],index='date',columns='station',values='price'))
 connection.close()
+
