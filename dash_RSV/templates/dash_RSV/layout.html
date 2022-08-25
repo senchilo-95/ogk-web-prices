@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Анализ ОРЭМ</title>
+    <title>Тестовое задание Газпром Экспорт</title>
     <link rel="stylesheet" href="{% static 'dash_RSV/css/main.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <script src="{% static 'dash_RSV/js/main.js' %}"></script>
@@ -37,22 +37,17 @@
 
         <!-- Tab links -->
 <div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'dash_RSV')"><li><i class="fas fa-chart-line"></i> Цена РСВ</li></button>
-  <button class="tablinks" onclick="openCity(event, 'consum_and_gen')"><li><i class="fas fa-industry"></i> Генерация и потребление в ОЭС</li></button>
-  <button class="tablinks" onclick="openCity(event, 'gen_types')"><li><i class="fas fa-bolt"></i> Генерация по источникам</li></button>
+  <button class="tablinks" onclick="openCity(event, 'futures')"><li><i class="fas fa-chart-line"></i> Фьючерсная кривая рынка</li></button>
+  <button class="tablinks" onclick="openCity(event, 'gas_supply')"><li><i class="fas fa-gas-pump"></i> Объем потребления газа в Европе</li></button>
 
 </div>
 
-<div id="dash_RSV" class="tabcontent">
+<div id="futures" class="tabcontent">
     {%plotly_app name="SimpleExample" ratio=2.2%}
 </div>
 
-<div id="consum_and_gen" class="tabcontent">
-	{%plotly_app  name="ConsumApp" ratio=1%}
-</div>
-
-<div id="gen_types" class="tabcontent">
-	<h3>Страница в разработке</h3>
+<div id="gas_supply" class="tabcontent">
+	{%plotly_app  name="GasApp" ratio=0.5%}
 </div>
     </ul>
 

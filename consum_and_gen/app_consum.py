@@ -2,10 +2,10 @@
 from django_plotly_dash import DjangoDash
 import datetime
 import dash_bootstrap_components as dbc
-from .parser_so import consum_df
 from dash import Dash, dcc, html, Input, Output
 import plotly.express as px
 import locale
+import eurostat
 import plotly.graph_objects as go
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 import pandas as pd
@@ -14,141 +14,128 @@ import pandas as pd
 dict_dates = {1:'янв',2:'фев',3:'мар',4:'апр',5:'мая',6:'июн',7:'июл',8:'авг',9:'сен',10:'окт',11:'ноя',12:'дек'}
 dict_dates_full = {1:'января',2:'февраля',3:'марта',4:'апреля',5:'мая',6:'июня',7:'июля',8:'августа',9:'сентября',10:'октября',11:'ноября',12:'декабря'}
 
+toc=eurostat.get_toc_df()
+result=eurostat.subset_toc_df(toc, 'Supply, transformation and consumption of gas - monthly data')
+result_code = str(result.code.values[0])
+df = eurostat.get_data_df(result_code,flags=False)
+countries_list = ['BE','FR','ES']
+target_unit = 'MIO_M3' #нам нужны только объемы - миллионы куб.м.
+code_col = r'geo\time' # признак страны
+feature='IC_CAL_MG' # необходимый признак
+df_sorted=df[(df[code_col].isin(countries_list))&(df['nrg_bal'] == feature)&(df['unit'] == target_unit)]
+df_t = df_sorted[df_sorted.columns[3:]].set_index(code_col).T
+df_t.index=pd.to_datetime(df_t.index,format='%YM%m')
+df_t.dropna(inplace=True) # удаляем пустые данные до 2014 года и за июнь-июль 2022 г.
+df_t.sort_index(inplace=True)
+
 ues_tabs = dcc.Tabs(
-    id="tabs-with-classes-consum",
-    value='ОЭС Центра',
+    id="tabs-with-classes",
+    value='BE',
     parent_className='custom-tabs',
     className='custom-tabs-container',
     children=[
         dcc.Tab(
-            label='ОЭС Центра',
-            value='ОЭС Центра', className='custom-tab',
+            label='Бельгия',
+            value='BE', className='custom-tab',
             selected_className='custom-tab--selected'
         ),
         dcc.Tab(
-            label='ОЭС Юга',
-            value='ОЭС Юга',
+            label='Испания',
+            value='ES',
             className='custom-tab',
             selected_className='custom-tab--selected'
         ),
         dcc.Tab(
-            label='ОЭС Северо-Запада',
-            value='ОЭС Северо-Запада',
-            className='custom-tab',
-            selected_className='custom-tab--selected'
-        ),
-        dcc.Tab(
-            label='ОЭС Урала',
-            value='ОЭС Урала',
-            className='custom-tab',
-            selected_className='custom-tab--selected'
-        ),
-        dcc.Tab(
-            label='ОЭС Средней Волги',
-            value='ОЭС Средней Волги',
+            label='Франция',
+            value='FR',
             className='custom-tab',
             selected_className='custom-tab--selected'
         )
 
     ])
 
-dropdown = dcc.Dropdown(
-    id = 'oes-dropdown',
-    searchable=False,
-    value='ОЭС Юга',
-    options=[
-{'label' : 'ОЭС Юга', 'value' : 'ОЭС Юга'},
-{'label' : 'ОЭС Северо-Запада', 'value' : 'ОЭС Северо-Запада'},
-{'label' : 'ОЭС Центра', 'value' : 'ОЭС Центра'},
-{'label' : 'ОЭС Урала', 'value' : 'ОЭС Урала'},
-{'label' : 'ОЭС Средней Волги', 'value' : 'ОЭС Средней Волги'}
-    ],style={'width':'400px', 'align-items': 'center', 'justify-content': 'center'}
-)
 
-consum_df_gen_h = pd.pivot_table(consum_df,index='date',columns='ups',values='consumption')
-consum_df_cons_h = pd.pivot_table(consum_df,index='date',columns='ups',values='generation')
-
-consum_df_gen_d = consum_df_gen_h.resample('1D').mean()
-consum_df_cons_d = consum_df_cons_h.resample('1D').mean()
-
-slider=dcc.Slider(len(consum_df_gen_d)-14, len(consum_df_gen_d)-1,1, value=len(consum_df_gen_d)-1,
-    marks={idx:'{} {}'.format(consum_df_gen_d.index[idx].day,dict_dates[consum_df_gen_d.index[idx].month]) for idx in range(len(consum_df_gen_d)-14,len(consum_df_gen_d))},
-    included=False,
-    id='date_slider'
-)
-slider = html.Div([slider], style={'height': '50px'})
-day_consum = dbc.Card([dcc.Graph(id='my-graph1')])
-hour_consum = dbc.Card([dcc.Graph(id='my-graph2'),dbc.CardBody(slider)])
-
+month_gas = dbc.Card([dcc.Graph(id='my-graph-m')])
+year_gas = dbc.Card([dcc.Graph(id='my-graph-y')])
 cards = html.Div(
     [
         dbc.Card(
-            dbc.CardBody(day_consum),
+            dbc.CardBody([month_gas]),
             className="mb-3",style={'min-width':'600px'}),
-        dbc.Card(dbc.CardBody(hour_consum),
+        dbc.Card(
+            dbc.CardBody([year_gas]),
             className="mb-3",style={'min-width':'600px'})
     ]
 )
 
-app = DjangoDash('ConsumApp',add_bootstrap_links=True)
+countries_dict = {'BE':'Бельгии','FR':'Франции','ES':'Испании'}
+app = DjangoDash('GasApp',add_bootstrap_links=True)
 app.css.append_css({ "external_url" : "/static/dash_RSV/css/main.css" })
-app.layout =  html.Div([dropdown,cards],style={'background-color': '#D0DBEA','min-width':'600px','width':'100%'})
+app.layout =  html.Div([ues_tabs,cards],style={'background-color': '#D0DBEA','min-width':'600px','width':'100%'})
 
-@app.callback([Output('my-graph1', 'figure'),Output('my-graph2', 'figure')],
-              [Input('oes-dropdown', 'value'),Input('date_slider', 'value')])
-def update_graph(tab,date):
-    figure = px.line(
-                title="Среднесуточное потребление и генерация",
-                labels={
-               "date": "Дата. Выберите период.",
-                 "value": "МВт*ч",
-                    'variable':'ОЭС'
-                    },
-                template="plotly_white",markers=True)
+@app.callback([Output('my-graph-y', 'figure'),Output('my-graph-m', 'figure')],
+              [Input('tabs-with-classes', 'value')])
+def update_graph(tab):
+    data = pd.DataFrame(df_t[df_t.index.year >= 2019][tab])
+    df = pd.DataFrame(data[data.index.year == 2019])
+    df.columns = [2019]
+    df['m'] = df.index.month
+    df_22 = pd.DataFrame(data[data.index.year == 2022])
+    df_22.columns = [2022]
+    df_22['m'] = df_22.index.month
+    df[2020] = data[data.index.year == 2020].values
+    df[2021] = data[data.index.year == 2021].values
+    df = df.merge(df_22, left_on=['m'], right_on=['m'], how='outer')
+    df.drop(columns='m', inplace=True)
+    df['DT'] = data[data.index.year == 2019].index
+
+    figure = px.line(df,
+                     x='DT',
+                     y=df.columns,
+                     template='plotly_white',
+                     hover_data={"DT": "|%B %M"},
+                     labels={
+                         "DT": "Месяц",
+                         "value": "Объем потребления газа, млн. куб. м.",
+                         'variable': 'Год'
+                     },
+                     title=f"Сравнение по годам объемов потребления газа в {countries_dict[tab]}",
+                     color_discrete_map={'2019': '#6DCFF6', '2020': '#0094D8', '2021': '#18335D',
+                                         'Прогноз 2022': '#FF9C00',
+                                        '2022': '#D50E2F'},
+                     markers=True)
+
+
     figure.update_xaxes(
-        dtick="D",
-        tickformat="%d%b",
-        # rangeslider_visible=True,
-        showgrid=True,showline=True, linewidth=0.1, linecolor='black', gridcolor='#DDE6F3'
+        dtick="M1",
+        tickformat="%b"
         )
-    figure.update_yaxes(showgrid=True,showline=True, linewidth=0.1, linecolor='black', gridcolor='#DDE6F3')
+    figure.update_layout(height=500)
 
+    data['rolling_mean'] = data.rolling(3).mean()
+    data=data.reset_index()
+    data.columns = ['DT','Объем потребления газа','Cкользящее среднее (3 мес)']
+    figure2 = px.line(data,
+                     x='DT',
+                     y=data.columns,
+                     template='plotly_white',
+                     hover_data={"DT": "|%B %M"},
+                     labels={
+                         "DT": "Месяц",
+                         "value": "Объем потребления газа, млн. куб. м.",
+                         'variable': 'Год'
+                     },
+                     title=f"Объем потребления газа в {countries_dict[tab]}",
+                     color_discrete_map={'Объем потребления газа': '#6DCFF6',
+                                         'Cкользящее среднее (3 мес)': '#FF9C00'},
+                     markers=True)
 
-    ticktext=[datetime.datetime.strptime(str(elem.date()), "%Y-%m-%d").strftime('%d-%b')
-            for elem in consum_df_gen_d.index]
-    figure.update_xaxes(tickformat='%d-%b')
-    figure.update_xaxes(tickvals=consum_df_gen_d.index)
-    figure.update_xaxes(ticktext=ticktext)
-    figure.add_trace(go.Scatter(x=consum_df_cons_d.index, y=consum_df_cons_d[tab].values,
-                             name='Потребление'))
-    figure.add_trace(go.Scatter(x=consum_df_gen_d.index, y=consum_df_gen_d[tab].values,
-                                name='Генерация'))
-
-    date_for_slider = consum_df_gen_d.index[date]
-    y=date_for_slider.year
-    m=date_for_slider.month
-    d=date_for_slider.day
-    consum_df_gen_now = consum_df_gen_h[(consum_df_gen_h.index.year==y)&(consum_df_gen_h.index.month==m)&(consum_df_gen_h.index.day==d)]
-    consum_df_cons_now = consum_df_cons_h[(consum_df_cons_h.index.year==y)&(consum_df_cons_h.index.month==m)&(consum_df_cons_h.index.day==d)]
-
-    figure.update_layout(height=400,showlegend=True)
-    figure_2 = px.line(
-        title="Почасовое потребление и генерация на " + "{} {}".format(d, dict_dates_full[m]),
-        labels={
-            "date": "Час суток",
-            "value": "МВт*ч",
-            'variable': 'ОЭС'
-        }, template="plotly_white", markers=True)
-    figure_2.add_trace(go.Scatter(x=consum_df_cons_now.index, y=consum_df_cons_now[tab].values,
-                                name='Потребление'))
-    figure_2.add_trace(go.Scatter(x=consum_df_gen_now.index, y=consum_df_gen_now[tab].values,
-                                name='Генерация'))
-    figure_2.update_xaxes(
-        ticktext=[i for i in range(24)],
-        showgrid=True, showline=True, linewidth=0.5, linecolor='black', gridcolor='#DDE6F3')
-    figure_2.update_yaxes(showgrid=True, showline=True, linewidth=0.5, linecolor='black', gridcolor='#DDE6F3')
-    figure_2.update_layout(height=400, showlegend=True)
-    return figure,figure_2
+    figure2.update_xaxes(
+        dtick="M1",
+        tickformat="%b"
+    )
+    figure2.update_layout(height=500)
+    return figure,figure2
 
 
 
