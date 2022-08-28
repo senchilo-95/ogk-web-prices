@@ -67,7 +67,7 @@ def number_to_station_name(row):
         return number_names_dict[number]
     except:
         return None
-download_data=True
+download_data=False
 if download_data:
     try:
         for date in range_dates:
