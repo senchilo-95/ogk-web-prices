@@ -1,0 +1,6 @@
+{% extends 'dash_RSV/layout.html' %}
+{% block title %}Генерация по источникам{% endblock %}
+{% block content %}
+    {%load plotly_dash%}
+	{%plotly_app  name="GenApp" ratio=2.2%}
+{% endblock %}

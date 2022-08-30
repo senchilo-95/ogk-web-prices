@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'dpd_static_support',
     'dash_RSV',
     'consum_and_gen',
+    'gen_types',
     'import_export',
     'django.contrib.admin',
     'django.contrib.auth',

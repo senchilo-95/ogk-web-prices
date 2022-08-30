@@ -7,6 +7,8 @@ import io
 import datetime
 import time
 import numpy as np
+
+download_data=False
 #
 from sqlalchemy.orm import sessionmaker, scoped_session
 # all_prices = pd.read_excel('dash_RSV/prices_all_comp.xlsx',engine='openpyxl',index_col=0)
@@ -67,7 +69,7 @@ def number_to_station_name(row):
         return number_names_dict[number]
     except:
         return None
-download_data=False
+
 if download_data:
     try:
         for date in range_dates:

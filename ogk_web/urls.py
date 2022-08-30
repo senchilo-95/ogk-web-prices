@@ -21,5 +21,6 @@ urlpatterns = [
     path('', include('dash_RSV.urls')),
     path('dash_RSV/', include('dash_RSV.urls')),
     path('consum_and_gen/', include('consum_and_gen.urls')),
+    path('gen_types/', include('gen_types.urls')),
     path('django_plotly_dash/', include('django_plotly_dash.urls'))
 ]

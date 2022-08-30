@@ -5,7 +5,11 @@ import datetime
 import time
 import sqlalchemy as sa
 engine = sa.create_engine('sqlite:///consum.sqlite3', echo = True)
-download_data = True
+from os import path
+
+download_data=False
+
+
 connection = engine.connect()
 
 oes_dict={'oes-northwest':'ОЭС Северо-Запада','oes-ural':'ОЭС Урала',
@@ -43,7 +47,6 @@ def power_datatable(url,oes):
     return data_power
 
 
-download_data=False
 if download_data == True:
     # try:
     command = ("""
