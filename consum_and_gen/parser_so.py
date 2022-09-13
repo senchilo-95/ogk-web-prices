@@ -97,6 +97,14 @@ FROM [generation_and_consumption]
 # connection = engine.connect()
 consum_df = pd.read_sql_query(command,connection)
 consum_df['date']=pd.to_datetime(consum_df['date'])
+
+
+y=consum_df['date'].iloc[-1].year
+m=consum_df['date'].iloc[-1].month
+d=consum_df['date'].iloc[-1].day
+#
+border_date=datetime.datetime(year=y,month=m,day=d)-datetime.timedelta(days=30)
+consum_df=consum_df[consum_df['date']>=border_date]
 # print(consum_df)
 # connection.close()
 
