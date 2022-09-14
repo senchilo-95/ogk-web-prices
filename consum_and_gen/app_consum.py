@@ -120,11 +120,12 @@ def update_graph(tab,date):
     figure.update_xaxes(tickformat='%d-%b')
     figure.update_xaxes(tickvals=consum_df_gen_d.index)
     figure.update_xaxes(ticktext=ticktext)
+    figure.update_xaxes(tickangle=90)
     figure.add_trace(go.Scatter(x=consum_df_cons_d.index, y=consum_df_cons_d[tab].values,
                              name='Потребление'))
     figure.add_trace(go.Scatter(x=consum_df_gen_d.index, y=consum_df_gen_d[tab].values,
                                 name='Генерация'))
-
+    figure.update_layout(width=1200)
     date_for_slider = consum_df_gen_d.index[date]
     y=date_for_slider.year
     m=date_for_slider.month
