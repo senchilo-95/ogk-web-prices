@@ -78,7 +78,7 @@ slider=dcc.Slider(len(consum_df_gen_d)-14, len(consum_df_gen_d)-1,1, value=len(c
     id='date_slider'
 )
 slider = html.Div([slider], style={'height': '50px'})
-day_consum = dbc.Card([dcc.Graph(id='my-graph1',style = {'width':'90%'})])
+day_consum = dbc.Card([dcc.Graph(id='my-graph1',style = {'width':'98%'})])
 hour_consum = dbc.Card([dcc.Graph(id='my-graph2'),dbc.CardBody(slider)])
 
 cards = html.Div(

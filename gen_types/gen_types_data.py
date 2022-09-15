@@ -30,11 +30,11 @@ FROM [generation_types]
 
 df = pd.read_sql_query(command,connection)
 end_date = pd.to_datetime(df['date'].iloc[-1])
-tommorow=datetime.datetime.now().date()+datetime.timedelta(days=1)
+tommorow=datetime.datetime.now().date()+datetime.timedelta(days=2)
 if download_data:
     days_list = pd.date_range(start=end_date,end=tommorow,freq='1D')
     for today in days_list:
-
+        print(today)
         def date_fill(row):
             return pd.to_datetime(datetime.datetime(year=today.year, month=today.month, day=today.day, hour=row['hour']))
 
