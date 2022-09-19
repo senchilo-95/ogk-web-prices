@@ -25,7 +25,15 @@ connection=engine.connect()
 #         )
 #          """)
 # all_prices.to_sql('prices_all', con=connection, index=False, if_exists='replace')
+#удаляем данные старше 30 дней
 
+date_for_clear = datetime.datetime.now().date() - datetime.timedelta(days=30)
+
+result = engine.execute("""
+        DELETE 
+        FROM [prices_all]
+        WHERE date <= '{} 00:00:00.000000'
+         """.format(date_for_clear))
 
 command=("""
 SELECT date
@@ -34,8 +42,6 @@ FROM [prices_all]
 
 dates = pd.read_sql_query(command,connection)
 end_date_db=(pd.to_datetime(dates.values[-1][0]).date())
-
-
 # sql = ('DROP TABLE prices_all;')
 # result = engine.execute(sql)
 

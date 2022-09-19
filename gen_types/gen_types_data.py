@@ -1,5 +1,5 @@
 import sqlalchemy as sa
-#
+import datetime
 engine = sa.create_engine('sqlite:///consum.sqlite3')
 connection=engine.connect()
 # result = engine.execute("""
@@ -10,6 +10,17 @@ connection=engine.connect()
 #            PRIMARY KEY (station_type,date)
 #         )
 #          """)
+
+#удаляем данные старше 30 дней
+date_for_clear = datetime.datetime.now().date() - datetime.timedelta(days=30)
+
+result = engine.execute("""
+        DELETE 
+        FROM [generation_types]
+        WHERE date <= '{} 00:00:00.000000'
+         """.format(date_for_clear))
+
+
 download_data=False
 import requests
 from bs4 import BeautifulSoup
@@ -78,6 +89,5 @@ FROM [generation_types]
 """)
 
 df = pd.read_sql_query(command,connection)
-print(df)
 
 

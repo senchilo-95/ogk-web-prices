@@ -17,6 +17,16 @@ oes_dict={'oes-northwest':'ОЭС Северо-Запада','oes-ural':'ОЭС 
           'oes-center':'ОЭС Центра'}
 oes_list = (list(oes_dict.keys()))
 
+#удаляем данные старше 30 дней
+
+date_for_clear = datetime.datetime.now().date() - datetime.timedelta(days=30)
+
+result = engine.execute("""
+        DELETE 
+        FROM [generation_and_consumption]
+        WHERE date <= '{} 00:00:00.000000'
+         """.format(date_for_clear))
+
 def power_datatable(url,oes):
     url = url
     # print(url)
