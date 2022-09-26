@@ -91,12 +91,15 @@ if download_data == True:
     dates = [(start_date + datetime.timedelta(days=i)) for i in range(number_days)]
     for oes in oes_list:
         urls = r'https://www.so-ups.ru/functioning/ees/{}/{}-indicators/{}-gen-consump-plan/?tx_mscdugraph_pi%5Bcontroller%5D=Graph&tx_mscdugraph_pi%5Baction%5D=fullview&tx_mscdugraph_pi%5BviewDate%5D={}'
-        for url in dates:
-            now1 = urls.format(oes, oes, oes, url)
-            df1 = power_datatable(now1, oes)
-            # time.sleep(5)
-            # connection = engine.connect()
-            df1.to_sql('generation_and_consumption', con=connection, index=False, if_exists='append')
+        try:
+            for url in dates:
+                now1 = urls.format(oes, oes, oes, url)
+                df1 = power_datatable(now1, oes)
+                # time.sleep(5)
+                # connection = engine.connect()
+                df1.to_sql('generation_and_consumption', con=connection, index=False, if_exists='append')
+                print(f'consum {url} done')
+        except: continue
             # connection.close()
     # except: pass
 
@@ -107,7 +110,6 @@ FROM [generation_and_consumption]
 # connection = engine.connect()
 consum_df = pd.read_sql_query(command,connection)
 consum_df['date']=pd.to_datetime(consum_df['date'])
-
 
 y=consum_df['date'].iloc[-1].year
 m=consum_df['date'].iloc[-1].month
