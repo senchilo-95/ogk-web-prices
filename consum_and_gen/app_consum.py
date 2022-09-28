@@ -65,6 +65,8 @@ dropdown = dcc.Dropdown(
 {'label' : 'ОЭС Средней Волги', 'value' : 'ОЭС Средней Волги'}
     ],style={'width':'400px', 'align-items': 'center', 'justify-content': 'center'}
 )
+consum_df['generation']=consum_df['generation'].astype('float')
+consum_df['consumption']=consum_df['consumption'].astype('float')
 
 consum_df_gen_h = pd.pivot_table(consum_df,index='date',columns='ups',values='consumption')
 consum_df_cons_h = pd.pivot_table(consum_df,index='date',columns='ups',values='generation')
@@ -125,6 +127,19 @@ def update_graph(tab,date):
                              name='Потребление'))
     figure.add_trace(go.Scatter(x=consum_df_gen_d.index, y=consum_df_gen_d[tab].values,
                                 name='Генерация'))
+
+    consum_df_cons_d['weekday']=consum_df_cons_d.index.weekday
+    holidays=consum_df_cons_d[consum_df_cons_d['weekday'].isin([5,6])].index
+    delta = datetime.timedelta(minutes=60*12)
+    for i in range(0,len(holidays),2):
+        try:
+            figure.add_vrect(x0=holidays[i]-delta, x1=holidays[i]+datetime.timedelta(days=2)-delta,
+              annotation_text="Вых.", annotation_position="top left",
+              fillcolor="#8DB1E1", opacity=0.2, line_width=0.1)
+        except:
+            figure.add_vrect(x0=holidays[i]-delta,x1=holidays[i]+datetime.timedelta(days=1)-delta,
+                  annotation_text="Вых.", annotation_position="top left",
+                  fillcolor="#8DB1E1", opacity=0.2, line_width=0.1)
     # figure.update_layout(width=1200)
     date_for_slider = consum_df_gen_d.index[date]
     y=date_for_slider.year

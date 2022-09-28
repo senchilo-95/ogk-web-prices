@@ -75,7 +75,18 @@ def update_graph(tab,date):
         )
     figure.update_yaxes(showgrid=True,showline=True, linewidth=0.1, linecolor='black', gridcolor='#DDE6F3')
 
-
+    gen_d['weekday'] = gen_d.index.weekday
+    holidays = gen_d[gen_d['weekday'].isin([5, 6])].index
+    delta = datetime.timedelta(days=1,minutes=60 * 12)
+    for i in range(0, len(holidays), 2):
+        try:
+            figure.add_vrect(x0=holidays[i] - delta, x1=holidays[i] + datetime.timedelta(days=2) - delta,
+                             annotation_text="Вых.", annotation_position="top left",
+                             fillcolor="#8DB1E1", opacity=0.2, line_width=0.1)
+        except:
+            figure.add_vrect(x0=holidays[i] - delta, x1=holidays[i] + datetime.timedelta(days=1) - delta,
+                             annotation_text="Вых.", annotation_position="top left",
+                             fillcolor="#8DB1E1", opacity=0.2, line_width=0.1)
     # ticktext=[datetime.datetime.strptime(str(elem.date()), "%Y-%m-%d").strftime('%d-%b')
     #         for elem in gen_d.index]
     # figure.update_xaxes(tickformat='%d-%b')

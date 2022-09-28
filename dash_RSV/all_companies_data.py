@@ -29,11 +29,11 @@ connection=engine.connect()
 
 date_for_clear = datetime.datetime.now().date() - datetime.timedelta(days=30)
 
-result = engine.execute("""
-        DELETE 
-        FROM [prices_all]
-        WHERE date <= '{} 00:00:00.000000'
-         """.format(date_for_clear))
+# result = engine.execute("""
+#         DELETE
+#         FROM [prices_all]
+#         WHERE date <= '{} 00:00:00.000000'
+#          """.format(date_for_clear))
 
 command=("""
 SELECT date

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     'django.contrib.staticfiles',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'contact_form.apps.ContactFormConfig',
     'aldjemy',
     'bootstrap4'
 ]
@@ -158,3 +159,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'nikitasenchilo@gmail.com'
+EMAIL_HOST_PASSWORD = 'ubdyeienjtsjlbor'
+EMAIL_USE_TLS = True

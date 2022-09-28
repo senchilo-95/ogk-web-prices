@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import locale
 from .all_companies_data import ogk_df,tgk_df,mos_df
-bg_modal_color = '#187CDF'
+bg_modal_color = 'white'
 dict_dates = {1:'янв',2:'фев',3:'мар',4:'апр',5:'мая',6:'июн',7:'июл',8:'авг',9:'сен',10:'окт',11:'ноя',12:'дек'}
 dict_dates_full = {1:'января',2:'февраля',3:'марта',4:'апреля',5:'мая',6:'июня',7:'июля',8:'августа',9:'сентября',10:'октября',11:'ноября',12:'декабря'}
 range_of_dates=pd.date_range(start=ogk_df.index[0].date(),end=ogk_df.index[-1].date(),freq='1D')
@@ -75,7 +75,11 @@ dropdown_ogk = dcc.Dropdown(
 )
 modal_ogk = html.Div(
     [
-        dbc.Button("ОГК-2", id="open-ogk",style={'background-color':bg_modal_color,'font-size':'12pt'}),
+        dbc.Button(dbc.CardImg(src="/static/dash_RSV/images/ogk.png"),
+                   id="open-ogk",
+                   style={'background-color': bg_modal_color,
+                          'font-size': '12pt',
+                          'margin': '0px', 'width': '200px'}),
         dbc.Modal(
             [
                 dbc.ModalHeader("ПАО 'ОГК-2'",),
@@ -180,7 +184,12 @@ dropdown_tgk = dcc.Dropdown(
 )
 modal_tgk = html.Div(
     [
-        dbc.Button("ТГК-1", id="open-tgk",style={'background-color':bg_modal_color,'font-size':'12pt'}),
+        dbc.Button(dbc.CardImg(src="/static/dash_RSV/images/tgk.png"),
+                   id="open-tgk",
+                   style={'background-color': bg_modal_color,
+                          'font-size': '12pt',
+                          'margin': '0px', 'width': '200px'}
+                   ),
         dbc.Modal(
             [
                 dbc.ModalHeader("ПАО 'ТГК-1'",),
@@ -261,7 +270,11 @@ dropdown_mos = dcc.Dropdown(
 )
 modal_mos = html.Div(
     [
-        dbc.Button("Мосэнерго", id="open-mos",style={'background-color':bg_modal_color,'font-size':'12pt'}),
+        dbc.Button(dbc.CardImg(src="/static/dash_RSV/images/mos.png"),
+                   id="open-mos",
+                   style={'background-color':bg_modal_color,
+                          'font-size':'12pt',
+                            'margin':'0px','width':'200px'}),
         dbc.Modal(
             [
                 dbc.ModalHeader("ПАО 'Мосэнерго'",),
@@ -272,47 +285,47 @@ modal_mos = html.Div(
             size="xxl",
             centered=False
         ),
-    ],style={"margin": '0px','textAlign': 'center'}
+    ],style={"margin": '0px','textAlign': 'top','margin':'0px'}
                 )
 
 modal_mos_card= dbc.Card(
     [
-        dbc.CardImg(src="/static/dash_RSV/images/st1.png", top=True,
-                    style={'display': 'inline-block','margin-left':'40px','margin-top':'10px','width':'100px','height':'100px'}),
+        # dbc.CardImg(src="/static/dash_RSV/images/mos.png", top=True,
+        #             style={'display': 'inline-block','margin-left':'40px','margin-top':'10px','width':'100px','height':'100px'}),
         dbc.CardBody(
             [
                 modal_mos
             ]
         ),
     ],
-    style={"width": "12rem","height": "13rem",'background-color':'inherit',
-           'border':'2px solid','border-color':'#454661','margin-top':'20px','margin-left':'40px'},
+    style={"width": "10rem","height": "9rem",'background-color':'inherit',
+           'border':'0px solid','border-color':'#454661','margin-top':'20px','margin-left':'40px'},
 )
 
 modal_ogk_card= dbc.Card(
     [
-        dbc.CardImg(src="/static/dash_RSV/images/st2.png", top=True,
-                    style={'display': 'inline-block','margin-left':'40px','margin-top':'10px','width':'100px','height':'100px'}),
+        # dbc.CardImg(src="/static/dash_RSV/images/ogk.png", top=True,
+        #             style={'display': 'inline-block','margin-left':'40px','margin-top':'10px','width':'100px','height':'100px'}),
         dbc.CardBody(
             [
                 modal_ogk
             ]
         ),
     ],
-    style={"width": "12rem","height": "13rem",'background-color':'inherit',
-           'border':'2px solid','border-color':'#454661','margin-top':'20px','margin-left':'40px'},
+    style={"width": "10rem","height": "9rem",'background-color':'inherit',
+           'border':'0px solid','border-color':'#454661','margin-top':'20px','margin-left':'40px'},
 )
 
 modal_tgk_card= dbc.Card(
     [
-        dbc.CardImg(src="/static/dash_RSV/images/st3.png", top=True,
-                    style={'display': 'inline-block','margin-left':'40px','margin-top':'10px','width':'100px','height':'100px'}),
+        # dbc.CardImg(src="/static/dash_RSV/images/tgk.png", top=True,
+        #             style={'display': 'inline-block','margin-left':'40px','margin-top':'10px','width':'100px','height':'100px'}),
         dbc.CardBody(
             [
                 modal_tgk
             ]
         ),
     ],
-    style={"width": "12rem","height": "13rem",'background-color':'inherit',
-           'border':'2px solid','border-color':'#454661','margin-top':'20px','margin-left':'40px'},
+    style={"width": "10rem","height": "9rem",'background-color':'inherit',
+           'border':'0px solid','border-color':'#454661','margin-top':'20px','margin-left':'40px'},
 )

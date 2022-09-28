@@ -11,9 +11,9 @@
     <title>Анализ ОРЭМ</title>
     <link rel="stylesheet" href="{% static 'dash_RSV/css/main.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+
     <script src="{% static 'dash_RSV/js/main.js' %}"></script>
     <!-- Yandex.Metrika counter -->
-
 <script type="text/javascript" >
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
@@ -29,7 +29,7 @@
 <!-- /Yandex.Metrika counter -->
 
 </head>
-<body>
+<body onload="document.getElementById('defaultOpen').click();">
 <main>
 <!-- Tab content -->
 <aside>
@@ -37,11 +37,30 @@
 
         <!-- Tab links -->
 <div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'dash_RSV')"><li><i class="fas fa-chart-line"></i> Цена РСВ</li></button>
+  <button class="tablinks" onclick="openCity(event, 'dash_RSV')" id="defaultOpen"><li><i class="fas fa-chart-line"></i> Цена РСВ</li></button>
   <button class="tablinks" onclick="openCity(event, 'consum_and_gen')"><li><i class="fas fa-industry"></i> Генерация и потребление в ОЭС</li></button>
   <button class="tablinks" onclick="openCity(event, 'gen_types')"><li><i class="fas fa-bolt"></i> Генерация по источникам</li></button>
-
+    <button class="tablinks"><a href="#openModal">Обратная связь</a></button>
 </div>
+<!-- HTML модального окна -->
+<div id="openModal" class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Форма обратной связи</h3>
+        <a href="#close" title="Close" class="close">×</a>
+      </div>
+      <div class="modal-body">
+        <ul>
+            <li>
+                <iframe width='100%' height = '400px' src="contact/"></iframe>
+                </li>
+		</ul>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div id="dash_RSV" class="tabcontent">
     {%plotly_app name="SimpleExample" ratio=2.2%}

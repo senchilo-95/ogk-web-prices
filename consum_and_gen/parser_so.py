@@ -12,6 +12,9 @@ download_data=False
 
 connection = engine.connect()
 
+# test_df = pd.read_excel(r'consum_and_gen/consum_and_gen.xlsx',engine='openpyxl')
+# test_df.to_sql('generation_and_consumption', con=connection, if_exists='replace')
+
 oes_dict={'oes-northwest':'ОЭС Северо-Запада','oes-ural':'ОЭС Урала',
           'oes-volga':'ОЭС Средней Волги','oes-south':'ОЭС Юга',
           'oes-center':'ОЭС Центра'}
@@ -20,12 +23,11 @@ oes_list = (list(oes_dict.keys()))
 #удаляем данные старше 30 дней
 
 date_for_clear = datetime.datetime.now().date() - datetime.timedelta(days=30)
-
-result = engine.execute("""
-        DELETE 
-        FROM [generation_and_consumption]
-        WHERE date <= '{} 00:00:00.000000'
-         """.format(date_for_clear))
+# result = engine.execute("""
+#         DELETE
+#         FROM [generation_and_consumption]
+#         WHERE date <= '{} 00:00:00.000000'
+#          """.format(date_for_clear))
 
 def power_datatable(url,oes):
     url = url
@@ -87,18 +89,21 @@ if download_data == True:
         end_date_now = pd.to_datetime(datetime.datetime.now()+datetime.timedelta(days=1)).date()
     else:
         end_date_now = pd.to_datetime(datetime.datetime.now()).date()
+    # start_date = datetime.date(year=2022,month=9,day=1)
+
     number_days = (end_date_now-start_date).days + 1
     dates = [(start_date + datetime.timedelta(days=i)) for i in range(number_days)]
     for oes in oes_list:
         urls = r'https://www.so-ups.ru/functioning/ees/{}/{}-indicators/{}-gen-consump-plan/?tx_mscdugraph_pi%5Bcontroller%5D=Graph&tx_mscdugraph_pi%5Baction%5D=fullview&tx_mscdugraph_pi%5BviewDate%5D={}'
         try:
             for url in dates:
+                # time.sleep(2)
                 now1 = urls.format(oes, oes, oes, url)
                 df1 = power_datatable(now1, oes)
                 # time.sleep(5)
                 # connection = engine.connect()
                 df1.to_sql('generation_and_consumption', con=connection, index=False, if_exists='append')
-                print(f'consum {url} done')
+                # print(f'consum {url} done')
         except: continue
             # connection.close()
     # except: pass
@@ -117,6 +122,5 @@ d=consum_df['date'].iloc[-1].day
 #
 border_date=datetime.datetime(year=y,month=m,day=d)-datetime.timedelta(days=30)
 consum_df=consum_df[consum_df['date']>=border_date]
-# print(consum_df)
 # connection.close()
 
