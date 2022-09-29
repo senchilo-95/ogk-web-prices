@@ -92,7 +92,7 @@ modal_ogk = html.Div(
         ),
     ],style={"margin": '0px','textAlign': 'center'}
                 )
-
+modal_ogk = html.Div([dropdown_ogk,cards_ogk],style={'background-color': '#D0DBEA','min-width':'1000px'})
 # ТГК-1
 slider_tgk=dcc.Slider(len(df_tgk_m)-14, len(df_tgk_m)-1,1, value=len(df_tgk_m)-1,
     marks={idx:'{} {}'.format(df_tgk_m.index[idx].day,dict_dates[df_tgk_m.index[idx].month]) for idx in range(len(df_tgk_m)-14,len(df_tgk_m))},
