@@ -10,6 +10,12 @@ class ContactForm(ModelForm):
         model = Contact
         # Поля, которые будем использовать для заполнения
         fields = ['first_name', 'last_name', 'email', 'message']
+        labels = {
+            'first_name': 'Имя',
+            'last_name': 'Фамилия',
+            'email': 'E-mail',
+            'message': 'Отзыв',
+        }
         widgets = {
             'message': Textarea(
                 attrs={

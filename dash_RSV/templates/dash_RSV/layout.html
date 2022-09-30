@@ -40,27 +40,32 @@
   <button class="tablinks" onclick="openCity(event, 'dash_RSV')" id="defaultOpen"><li><i class="fas fa-chart-line"></i> Цена РСВ</li></button>
   <button class="tablinks" onclick="openCity(event, 'consum_and_gen')"><li><i class="fas fa-industry"></i> Генерация и потребление в ОЭС</li></button>
   <button class="tablinks" onclick="openCity(event, 'gen_types')"><li><i class="fas fa-bolt"></i> Генерация по источникам</li></button>
-    <button class="tablinks"><a href="#openModal">Обратная связь</a></button>
+    <button class="tablinks" onclick="openCity(event, 'feedback')"><li><i class="fas fa-bolt"></i> Обратная связь</li></button>
+
+<!--    <button class="tablinks"><a href="#openModal">Обратная связь</a></button>-->
 </div>
 <!-- HTML модального окна-->
-<div id="openModal" class="modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Форма обратной связи</h3>
-        <a href="#close" title="Close" class="close">×</a>
-      </div>
-      <div class="modal-body">
-        <ul>
-            <li>
-                <iframe width='100%' height = '400px' src="contact/"></iframe>
-                </li>
-		</ul>
-      </div>
-    </div>
-  </div>
-</div>
+<!--<div id="openModal" class="modal">-->
+<!--  <div class="modal-dialog">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header">-->
+<!--        <h3 class="modal-title">Форма обратной связи</h3>-->
+<!--        <a href="#close" title="Close" class="close">×</a>-->
+<!--      </div>-->
+<!--      <div class="modal-body">-->
+<!--        <ul>-->
+<!--            <li>-->
+<!--                <iframe width='100%' height = '400px' src="contact/"></iframe>-->
+<!--                </li>-->
+<!--		</ul>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
+<div id="feedback" class="tabcontent">
+    <iframe width='400px' height = '400px' src="contact/"></iframe>
+</div>
 
 <div id="dash_RSV" class="tabcontent">
     {%plotly_app name="SimpleExample" ratio=2.2%}

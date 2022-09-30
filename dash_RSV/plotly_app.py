@@ -27,10 +27,13 @@ dict_dates_full = {1:'января',2:'февраля',3:'марта',4:'апр�
 
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 modal = html.Div(className='plotly_body',children=[
-    dbc.Row([
-        dbc.Col(modal_ogk),
-        # dbc.Col(modal_tgk,width=4),
-        # dbc.Col(modal_mos,width=4)
+    dbc.CardGroup([
+modal_ogk,
+modal_tgk,
+modal_mos
+        # dbc.Col(modal_ogk,width=3),
+        # dbc.Col(modal_tgk,width=3),
+        # dbc.Col(modal_mos,width=3)
                     ])
                  ]# style={'background-color':'red','height':'500px'}
 )

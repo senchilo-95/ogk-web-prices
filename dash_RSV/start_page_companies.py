@@ -79,7 +79,7 @@ modal_ogk = html.Div(
                    id="open-ogk",
                    style={'background-color': bg_modal_color,
                           'font-size': '12pt',
-                          'margin': '0px', 'width': '200px'}),
+                          'margin': '0px', 'width': '200px','border-radius':'20px'}),
         dbc.Modal(
             [
                 dbc.ModalHeader("ПАО 'ОГК-2'",),
@@ -92,7 +92,7 @@ modal_ogk = html.Div(
         ),
     ],style={"margin": '0px','textAlign': 'center'}
                 )
-modal_ogk = html.Div([dropdown_ogk,cards_ogk],style={'background-color': '#D0DBEA','min-width':'1000px'})
+# modal_ogk = html.Div([dropdown_ogk,cards_ogk],style={'background-color': '#D0DBEA','min-width':'1000px'})
 # ТГК-1
 slider_tgk=dcc.Slider(len(df_tgk_m)-14, len(df_tgk_m)-1,1, value=len(df_tgk_m)-1,
     marks={idx:'{} {}'.format(df_tgk_m.index[idx].day,dict_dates[df_tgk_m.index[idx].month]) for idx in range(len(df_tgk_m)-14,len(df_tgk_m))},
@@ -188,7 +188,7 @@ modal_tgk = html.Div(
                    id="open-tgk",
                    style={'background-color': bg_modal_color,
                           'font-size': '12pt',
-                          'margin': '0px', 'width': '200px'}
+                          'margin': '0px', 'width': '200px','border-radius':'20px'}
                    ),
         dbc.Modal(
             [
@@ -274,7 +274,7 @@ modal_mos = html.Div(
                    id="open-mos",
                    style={'background-color':bg_modal_color,
                           'font-size':'12pt',
-                            'margin':'0px','width':'200px'}),
+                            'margin':'0px','width':'200px','border-radius':'20px'}),
         dbc.Modal(
             [
                 dbc.ModalHeader("ПАО 'Мосэнерго'",),
@@ -290,42 +290,36 @@ modal_mos = html.Div(
 
 modal_mos_card= dbc.Card(
     [
-        # dbc.CardImg(src="/static/dash_RSV/images/mos.png", top=True,
-        #             style={'display': 'inline-block','margin-left':'40px','margin-top':'10px','width':'100px','height':'100px'}),
-        dbc.CardBody(
+      dbc.CardBody(
             [
                 modal_mos
             ]
         ),
     ],
     style={"width": "10rem","height": "9rem",'background-color':'inherit',
-           'border':'0px solid','border-color':'#454661','margin-top':'20px','margin-left':'40px'},
+           'border':'0px solid','border-color':'#454661','margin':'50px'},
 )
 
 modal_ogk_card= dbc.Card(
     [
-        # dbc.CardImg(src="/static/dash_RSV/images/ogk.png", top=True,
-        #             style={'display': 'inline-block','margin-left':'40px','margin-top':'10px','width':'100px','height':'100px'}),
-        dbc.CardBody(
+     dbc.CardBody(
             [
                 modal_ogk
             ]
         ),
     ],
     style={"width": "10rem","height": "9rem",'background-color':'inherit',
-           'border':'0px solid','border-color':'#454661','margin-top':'20px','margin-left':'40px'},
+           'border':'0px solid','border-color':'#454661','margin':'50px'},
 )
 
 modal_tgk_card= dbc.Card(
     [
-        # dbc.CardImg(src="/static/dash_RSV/images/tgk.png", top=True,
-        #             style={'display': 'inline-block','margin-left':'40px','margin-top':'10px','width':'100px','height':'100px'}),
-        dbc.CardBody(
+       dbc.CardBody(
             [
                 modal_tgk
             ]
         ),
     ],
     style={"width": "10rem","height": "9rem",'background-color':'inherit',
-           'border':'0px solid','border-color':'#454661','margin-top':'20px','margin-left':'40px'},
+           'border':'0px solid','border-color':'#454661','margin':'50px'},
 )
