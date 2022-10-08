@@ -7,7 +7,7 @@ import sqlalchemy as sa
 engine = sa.create_engine('sqlite:///consum.sqlite3', echo = True)
 from os import path
 
-download_data=False
+download_data=True
 
 
 connection = engine.connect()
@@ -103,6 +103,7 @@ if download_data == True:
                 # time.sleep(5)
                 # connection = engine.connect()
                 df1.to_sql('generation_and_consumption', con=connection, index=False, if_exists='append')
+                time.sleep(4)
                 # print(f'consum {url} done')
         except: continue
             # connection.close()

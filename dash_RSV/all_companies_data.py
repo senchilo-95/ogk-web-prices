@@ -8,7 +8,7 @@ import datetime
 import time
 import numpy as np
 
-download_data=False
+download_data=True
 #
 from sqlalchemy.orm import sessionmaker, scoped_session
 # all_prices = pd.read_excel('dash_RSV/prices_all_comp.xlsx',engine='openpyxl',index_col=0)
@@ -28,12 +28,25 @@ connection=engine.connect()
 #удаляем данные старше 30 дней
 
 date_for_clear = datetime.datetime.now().date() - datetime.timedelta(days=30)
-
 # result = engine.execute("""
-#         DELETE
-#         FROM [prices_all]
-#         WHERE date <= '{} 00:00:00.000000'
-#          """.format(date_for_clear))
+#         DROP TABLE [dash_RSV_prices_rsv_from_ats]
+#         """)
+# result = engine.execute("""
+#         DROP TABLE [dash_RSV_prices_all]
+#         """)
+#
+# result = engine.execute("""
+#         DROP TABLE [consum_and_gen_generation_and_consumption]
+#         """)
+# result = engine.execute("""
+#         DROP TABLE [gen_types_gen_types]
+#         """)
+
+result = engine.execute("""
+        DELETE
+        FROM [prices_all]
+        WHERE date <= '{} 00:00:00.000000'
+         """.format(date_for_clear))
 
 command=("""
 SELECT date
