@@ -7,7 +7,7 @@ import sqlalchemy as sa
 engine = sa.create_engine('sqlite:///consum.sqlite3', echo = True)
 from os import path
 
-download_data=True
+download_data=False
 
 
 connection = engine.connect()

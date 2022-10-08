@@ -8,7 +8,7 @@ import datetime
 import time
 import numpy as np
 
-download_data=True
+download_data=False
 #
 from sqlalchemy.orm import sessionmaker, scoped_session
 # all_prices = pd.read_excel('dash_RSV/prices_all_comp.xlsx',engine='openpyxl',index_col=0)

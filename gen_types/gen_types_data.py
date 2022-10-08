@@ -21,7 +21,7 @@ date_for_clear = datetime.datetime.now().date() - datetime.timedelta(days=30)
 #          """.format(date_for_clear))
 
 
-download_data=True
+download_data=False
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
