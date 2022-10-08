@@ -29,6 +29,7 @@ Django==3.2.14
 django-bootstrap4==22.1
 django-import-export==2.8.0
 django-plotly-dash==2.0.0
+django-reset-migrations==0.4.0
 dpd-components==0.1.0
 dpd-static-support==0.0.5
 et-xmlfile==1.1.0
