@@ -46,11 +46,9 @@ aside ul li:hover, aside ul a:hover {
 /* Style the tab */
 .tab {
   overflow: hidden;
-  border: 1px solid #ccc;
   background: #fefcea; /* Для старых браузров */
-  background: linear-gradient(to bottom, #FFF, #86D1FF);
+  background: linear-gradient(to bottom, #FFF, #FFF);
   padding: 0px;
-  border: 1px solid #333;
 }
 
 /* Style the buttons that are used to open the tab content */
