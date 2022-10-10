@@ -100,7 +100,7 @@ if download_data == True:
                 # time.sleep(2)
                 now1 = urls.format(oes, oes, oes, url)
                 df1 = power_datatable(now1, oes)
-                # time.sleep(5)
+                time.sleep(5)
                 # connection = engine.connect()
                 df1.to_sql('generation_and_consumption', con=connection, index=False, if_exists='append')
                 # print(f'consum {url} done')

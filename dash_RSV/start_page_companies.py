@@ -297,7 +297,7 @@ modal_mos_card= dbc.Card(
         ),
     ],
     style={"width": "10rem","height": "9rem",'background-color':'inherit',
-           'border':'0px solid','border-color':'#454661','margin':'50px'},
+           'border':'0px solid','border-color':'#454661','margin':'50px','margin-left':'0px'},
 )
 
 modal_ogk_card= dbc.Card(
@@ -309,7 +309,7 @@ modal_ogk_card= dbc.Card(
         ),
     ],
     style={"width": "10rem","height": "9rem",'background-color':'inherit',
-           'border':'0px solid','border-color':'#454661','margin':'50px'},
+           'border':'0px solid','border-color':'#454661','margin':'50px','margin-left':'0px'},
 )
 
 modal_tgk_card= dbc.Card(
@@ -321,5 +321,5 @@ modal_tgk_card= dbc.Card(
         ),
     ],
     style={"width": "10rem","height": "9rem",'background-color':'inherit',
-           'border':'0px solid','border-color':'#454661','margin':'50px'},
+           'border':'0px solid','border-color':'#454661','margin':'50px','margin-left':'0px'},
 )
