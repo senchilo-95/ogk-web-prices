@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     'contact_form.apps.ContactFormConfig',
     'aldjemy',
-'reset_migrations',
     'bootstrap4'
 ]
 

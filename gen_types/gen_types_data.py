@@ -12,13 +12,13 @@ connection=engine.connect()
 #          """)
 
 #удаляем данные старше 30 дней
-date_for_clear = datetime.datetime.now().date() - datetime.timedelta(days=30)
+date_for_clear = datetime.datetime.now().date() - datetime.timedelta(days=20)
 
-# result = engine.execute("""
-#         DELETE
-#         FROM [generation_types]
-#         WHERE date <= '{} 00:00:00.000000'
-#          """.format(date_for_clear))
+result = engine.execute("""
+        DELETE
+        FROM [generation_types]
+        WHERE date <= '{} 00:00:00.000000'
+         """.format(date_for_clear))
 
 
 download_data=False

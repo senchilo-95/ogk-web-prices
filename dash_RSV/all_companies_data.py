@@ -27,7 +27,7 @@ connection=engine.connect()
 # all_prices.to_sql('prices_all', con=connection, index=False, if_exists='replace')
 #удаляем данные старше 30 дней
 
-date_for_clear = datetime.datetime.now().date() - datetime.timedelta(days=30)
+date_for_clear = datetime.datetime.now().date() - datetime.timedelta(days=20)
 # result = engine.execute("""
 #         DROP TABLE [dash_RSV_prices_rsv_from_ats]
 #         """)
